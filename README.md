@@ -34,6 +34,9 @@ O projeto utiliza Java Spring Boot e segue uma arquitetura MVC, além de impleme
 
 O projeto é estruturado com base nas seguintes classes principais:
 
+![PBL-EC6 drawio](https://github.com/user-attachments/assets/ced8d2fc-10de-4385-9da6-e5f12ba50caf)
+
+
 ## Tecnologias Utilizadas
 
 - **Java 17**
