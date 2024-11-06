@@ -2,14 +2,21 @@
 Project Based Learning do 6º Semestre de Engenharia da Computação na Faculdade Engenheiro Salvador Arena
 
 ## Descrição do Projeto
-# **Sistema de avaliação de filmes e séries**
+# **Sistema de avaliação de filmes e séries - Total Mídia**
 
+<h1 style="font-size: 14px; font-weight: bold;">Sistema de avaliação de filmes e séries</h1>
+
+<p style="text-align: justify;">
 O sistema é um software baseado em website de avaliação de filmes, séries e animações, direcionado a críticos profissionais e usuários comuns. Ele deve ser capaz de registrar e exibir avaliações, bem como fornecer informações detalhadas sobre as obras e seus respectivos elencos. Este projeto é parte das atividades acadêmicas da disciplina de Modelagem de Software, 6° Semestre do curso de Engenharia da Computação.
+</p>
 
+<p style="text-align: justify;">
 Apesar desse sistema ser uma aplicação relativamente simples e inicialmente local, sendo utilizada principalmente como uma ferramenta de aprendizado acadêmico, ele segue um planejamento de arquitetura de software que poderia ser utilizado em um sistema real, escalável e robusto. Embora sua aplicação seja para fins acadêmicos, as tecnologias empregadas, como Java Spring para o back-end e HTML/CSS para o front-end, bem como a organização em camadas lógicas e físicas, refletem práticas profissionais que poderiam ser facilmente adaptadas para ambientes maiores e distribuídos. Como já citado anteriormente, esta aplicação será utilizada localmente, sem grandes integrações com sistemas externos ou exigências de alta performance, mas foi projetada com uma arquitetura sólida que garante sua funcionalidade, apresentando facilidade de manutenção e expansão futura, caso seja necessário.
+</p>
 
+<p style="text-align: justify;">
 A seguir, detalhamos as principais decisões de arquitetura tomadas para esse projeto.
-
+</p>
 
 ## Funcionalidades
 
