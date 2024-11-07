@@ -20,23 +20,52 @@ Embora sua aplicação seja para fins acadêmicos, as tecnologias empregadas, co
 A seguir, detalhamos as principais decisões de arquitetura tomadas para esse projeto.
 </p>
 
-## Funcionalidades
 
-- **Sistema de Usuários**: Os usuários podem se registrar, fazer login e acessar suas contas. Existem dois tipos de usuários:
-  - **Usuário Comum**: Pode fazer reviews, comentar e dar notas.
-  - **Crítico Profissional**: Tem mais destaque no site e suas avaliações possuem peso maior nas classificações.
-  
-- **Autenticação e Autorização**:
-  - Implementada com **Spring Security**, com suporte a login e controle de permissões baseado em roles (`ROLE_USER`, `ROLE_CRITIC`, `ROLE_ADMIN`).
-  
-- **Gerenciamento de Reviews**:
-  - Usuários podem postar reviews de filmes e séries, comentar e classificar os conteúdos.
-  
-- **Personalização de Perfis**:
-  - Cada usuário pode personalizar seu perfil com informações, foto, etc.
+# Funcionalidades
 
-- **Gêneros e Profissionais**:
-  - Sistema de cadastro de gêneros e profissionais (atores e diretores), com integração aos filmes e séries.
+## 1. Página Inicial (Home)
+- Apresenta visão geral das funcionalidades do website.
+- Acesso à pesquisa (básica e avançada) para informações de filmes, séries e animações.
+- Acesso à página de cadastro de usuário ou login.
+
+## 2. Cadastro de Usuários
+### 2.1. Usuários Padrão
+- Permite registro e gerenciamento de usuários.
+- Possui campos como Nome, E-mail, Senha.
+- Suporta cadastro e autenticação para garantir a segurança do login.
+
+### 2.2. Críticos Profissionais
+- Inclusão de nome, profissão, credenciais verificáveis, e uma breve biografia.
+- Critérios de verificação de credenciais, com implementação de um sistema automatizado ou manual para validação das credenciais dos críticos.
+- Suporta cadastro e autenticação para garantir a segurança do login.
+
+## 3. Área do Usuário
+- A área do usuário proporciona uma experiência personalizada, permitindo o acesso e gerenciamento de informações pessoais.
+
+### 3.1. Detalhamento
+- Acesso a dados pessoais e configurações de perfil.
+- Resumo das críticas publicadas, destacando as que geram maior engajamento (visualizações, curtidas, comentários).
+- Utilização de algoritmos para sugerir conteúdo relevante com base no comportamento do usuário.
+- Segurança: Medidas de proteção de dados pessoais.
+
+## 4. Cadastro de Filmes/Séries/Animações
+- Exibição de informações como título, resenha, elenco, diretor, trailer, avaliação geral do público, e críticas com maior engajamento.
+- Interface acessível para usuários com deficiência (ex.: compatibilidade com leitores de tela).
+- Cada item terá um resumo com título e imagem em miniatura, e link para informações detalhadas.
+- Exibição de uma lista dos filmes, curtas e séries mais novos, do mais recente ao mais antigo.
+- Exibição de uma lista de filmes com filtros personalizáveis (ex.: tempo de lançamento, popularidade).
+
+### 4.1. Detalhamento
+- A lista de filmes será atualizada em intervalos regulares para garantir que os usuários sempre vejam os conteúdos mais recentes.
+
+### 4.2. Ficha Técnica do Ator
+- Apresentação de informações detalhadas sobre atores e equipe cinematográfica.
+- Acesso a outras obras nas quais os atores e membros da equipe participaram.
+
+### 4.3. Rankeamento de Filme
+- Seção do site apresentando o Top 10 Filmes em Alta, exibindo os filmes mais populares.
+- Presença de filtros acessíveis e intuitivos, permitindo aos usuários personalizar a visualização do ranking.
+
 
 ## Modelagem de Classes
 
@@ -51,6 +80,19 @@ O projeto é estruturado com base nas seguintes classes principais:
 - **Spring Boot 3.x**
 - **Spring Security**
 - **Hibernate/JPA**
-- **MySQL**: Para o banco de dados.
 - **Thymeleaf**: Para renderização de templates no front-end.
 - **Maven**: Para gerenciamento de dependências.
+- **H2 Database: é um banco de dados em memória.
+
+## Diagrama  de Implementação 
+colar diagrama
+
+## Estrutura do Projeto
+
+## Modelos (Models)
+Os modelos representam as entidades do banco de dados e são utilizados na camada de negócio para manipular os dados.
+
+   Falta
+Data Access Objects (DAOs)
+Os DAOs encapsulam o acesso aos dados e executam operações no banco de dados utilizando Stored Procedures.
+    Falta
