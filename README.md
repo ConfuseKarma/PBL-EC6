@@ -92,7 +92,8 @@ colar diagrama
 ## Modelos (Models)
 Os modelos representam as entidades do banco de dados e são utilizados na camada de negócio para manipular os dados.
 
-   Falta
-Data Access Objects (DAOs)
+   --Falta
+## Data Access Objects (DAOs)
 Os DAOs encapsulam o acesso aos dados e executam operações no banco de dados utilizando Stored Procedures.
-    Falta
+    --Falta
+
