@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * @author Grupo7
- */
 public abstract class AbstractDAO<T> implements GenericoDAO<T> {
 
   @SuppressWarnings("unchecked")
