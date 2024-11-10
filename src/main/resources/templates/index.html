@@ -1,0 +1,36 @@
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+  <head>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+  </head>
+  <body>
+    <h1>Welcome!</h1>
+    <h2>Esta é a página home do TotalMedia</h2>
+
+    <div sec:authorize="isAuthenticated()">
+      <h3>Olá, <span th:text="${#authentication.name}">Usuário</span>!</h3>
+      <p>Email: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+      <p>Imagem: <img th:src="${#authentication.principal.image}" alt="User Image" /></p>
+      <p>
+        Papéis:
+        <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}"
+          >ROLE_USER</span
+        >
+      </p>
+      <p>
+        Usa 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Sim' : 'Não'}">Não</span>
+      </p>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+
+    <div sec:authorize="!isAuthenticated()">
+      <h3>Você não está autenticado. Por favor, faça login.</h3>
+      <button th:href="@{/login}" onclick="location.href='@{/login}'">Login</button>
+    </div>
+  </body>
+</html>
