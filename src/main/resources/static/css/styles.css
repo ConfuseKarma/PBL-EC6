@@ -1,3 +1,4 @@
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -6,13 +7,16 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e9ecef;
     color: #333;
+    line-height: 1.6;
 }
 
+/* Cabeçalho */
 header {
-    background-color: #2c3e50;
-    padding: 10px 0;
+    background-color: #34495e;
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .navbar {
@@ -21,37 +25,54 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
 }
 
 .navbar a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 700;
     margin: 0 15px;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #ecf0f1;
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 1.8rem;
+    font-weight: bold;
 }
 
+/* Links de navegação */
 .nav-links {
     display: flex;
     align-items: center;
 }
 
+/* Barra de pesquisa */
 .search-bar {
     flex-grow: 1;
     margin: 0 20px;
     position: relative;
+    max-width: 400px;
 }
 
 .search-bar input {
     width: 100%;
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    transition: border-color 0.3s;
 }
 
+.search-bar input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Botões de autenticação */
 .auth-buttons a, .user-info a {
     color: white;
     margin-left: 15px;
@@ -59,12 +80,14 @@ header {
     border-radius: 5px;
     text-decoration: none;
     background-color: #e74c3c;
+    transition: background-color 0.3s;
 }
 
 .auth-buttons a:hover, .user-info a:hover {
-    background-color: #d62c1a;
+    background-color: #c0392b;
 }
 
+/* Conteúdo principal */
 main {
     max-width: 1200px;
     margin: 20px auto;
@@ -74,17 +97,70 @@ main {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Rodapé */
 footer {
-    background-color: #2c3e50;
+    background-color: #34495e;
     color: white;
     text-align: center;
     padding: 20px 0;
     margin-top: 40px;
+    font-size: 0.9rem;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Imagem do usuário */
 .user-image {
     max-width: 40px;
     max-height: 40px;
-    border-radius: 50%; /* Faz a imagem ser redonda */
-    margin-left: 10px; /* Adiciona espaço entre o nome e a imagem */
+    border-radius: 50%;
+    margin-left: 10px;
+    border: 2px solid #ecf0f1;
+    transition: border-color 0.3s;
+}
+
+.user-image:hover {
+    border-color: #3498db;
+}
+
+/* Adicionando espaçamento ao conteúdo */
+h1, h2, h3, p {
+    margin-bottom: 15px;
+}
+
+button {
+    font-size: 1rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Layout responsivo */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .search-bar {
+        margin: 10px 0;
+        max-width: 100%;
+    }
+
+    .auth-buttons a, .user-info a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
 }

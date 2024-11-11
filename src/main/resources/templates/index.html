@@ -1,36 +1,68 @@
-<!doctype html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-  <head>
-    <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
-  </head>
-  <body>
-    <h1>Welcome!</h1>
-    <h2>Esta é a página home do TotalMedia</h2>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>TotalMedia</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <!-- Header with navigation and user info -->
+    <header>
+        <div class="navbar">
+            <a th:href="@{/}" class="logo">TotalMedia</a>
+            <nav class="nav-links">
+                <a th:href="@{/movies}">Movies</a>
+                <a th:href="@{/series}">Series</a>
+                <a th:href="@{/trending}">Trending</a>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." />
+            </div>
+            <!-- Authentication buttons (visible when not authenticated) -->
+            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Sign In</a>
+                <a th:href="@{/register}">Sign Up</a>
+            </div>
+            <!-- User info (visible when authenticated) -->
+            <div class="user-info" sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.name}">User</span>
+                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image"/>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </header>
 
-    <div sec:authorize="isAuthenticated()">
-      <h3>Olá, <span th:text="${#authentication.name}">Usuário</span>!</h3>
-      <p>Email: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
-      <p>Imagem: <img th:src="${#authentication.principal.image}" alt="User Image" /></p>
-      <p>
-        Papéis:
-        <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}"
-          >ROLE_USER</span
-        >
-      </p>
-      <p>
-        Usa 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Sim' : 'Não'}">Não</span>
-      </p>
-      <form th:action="@{/logout}" method="post">
-        <button type="submit">Logout</button>
-      </form>
-    </div>
+    <!-- Page content (this part will change depending on the page) -->
+    <main>
+        <h1>Welcome!</h1>
+        <h2>Esta é a página home do TotalMedia</h2>
 
-    <div sec:authorize="!isAuthenticated()">
-      <h3>Você não está autenticado. Por favor, faça login.</h3>
-      <button th:href="@{/login}" onclick="location.href='@{/login}'">Login</button>
-    </div>
-  </body>
+        <!-- Authenticated User Section -->
+        <div sec:authorize="isAuthenticated()">
+            <h3>Olá, <span th:text="${#authentication.name}">Usuário</span>!</h3>
+            <p>Email: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+            <p>Imagem: <img th:src="${#authentication.principal.image}" alt="User Image" /></p>
+            <p>
+                Papéis:
+                <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span>
+            </p>
+            <p>
+                Usa 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Sim' : 'Não'}">Não</span>
+            </p>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+        <!-- Not Authenticated User Section -->
+        <div sec:authorize="!isAuthenticated()">
+            <h3>Você não está autenticado. Por favor, faça login.</h3>
+            <button th:href="@{/login}" onclick="location.href='@{/login}'">Login</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+    </footer>
+</body>
 </html>
