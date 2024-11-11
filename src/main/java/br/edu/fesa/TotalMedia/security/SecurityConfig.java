@@ -86,10 +86,10 @@ public UserDetailsService userDetailsService() {
                 user.getPassword(),
                 user.getName(),
                 user.getImage(),
-                user.isActive(), // Atribuindo o valor do campo 'active' do User
-                user.isUsing2FA(),
+                user.getActive(), // Atribuindo o valor do campo 'active' do User
+                user.getIsUsing2FA(),
                 user.getBio(), // Atribuindo o valor de bio
-                user.isActive(), // Repassando o 'active' para o CustomUserDetails
+                user.getActive(), // Repassando o 'active' para o CustomUserDetails
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().name())) // Adicionando o papel do usuário
         );
     };
