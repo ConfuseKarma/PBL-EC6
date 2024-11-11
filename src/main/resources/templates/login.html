@@ -20,7 +20,7 @@
             <!-- Authentication buttons (visible when not authenticated) -->
             <div class="auth-buttons" sec:authorize="!isAuthenticated()">
                 <a th:href="@{/login}">Sign In</a>
-                <a th:href="@{/register}">Sign Up</a>
+                <a th:href="@{/user/create}">Sign Up</a>
             </div>
             <!-- User info (visible when authenticated) -->
             <div class="user-info" sec:authorize="isAuthenticated()">
@@ -44,7 +44,7 @@
             <button type="submit">Login</button>
         </form>
         <div class="auth-buttons">
-            <p>Don't have an account? <a th:href="@{/register}">Sign Up</a></p>
+            <p>Don't have an account? <a th:href="@{/create}">Sign Up</a></p>
         </div>
     </main>
 

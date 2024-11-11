@@ -18,7 +18,7 @@
             </div>
             <div class="auth-buttons" sec:authorize="!isAuthenticated()">
                 <a th:href="@{/login}">Sign In</a> 
-                <a th:href="@{/register}">Sign Up</a>
+                <a th:href="@{/user/create}">Sign Up</a>
             </div>
             <div class="user-info" sec:authorize="isAuthenticated()">
                 <span th:text="${#authentication.name}">User</span>

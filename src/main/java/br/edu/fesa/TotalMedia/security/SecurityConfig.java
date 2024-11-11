@@ -27,7 +27,7 @@ public class SecurityConfig {
             
             (requests) ->
                 requests
-                    .requestMatchers("/","/index", "/home","/layout", "/css/**", "/images/**")
+                    .requestMatchers("/","/index", "/home", "/layout", "/users/create", "/css/**", "/images/**")
                     .permitAll() // Todos os usuários podem acessar
                     .requestMatchers("/admin/**")
                     .hasRole("ADMIN") // Somente usuários com a role "ADMIN" podem acessar /admin/**
