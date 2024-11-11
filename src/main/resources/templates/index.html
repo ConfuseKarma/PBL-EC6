@@ -50,6 +50,7 @@
                 Status de autenticação em 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Ativado' : 'Desativado'}">Desativado</span>
             </p>
             <p>Para mais segurança, recomendamos ativar a autenticação de dois fatores (2FA) na sua conta.</p>
+            <a href="#" th:href="@{/user/list}" class="btn btn-info">Usuários</a>
             <form th:action="@{/logout}" method="post">
                 <button type="submit">Sair</button>
             </form>

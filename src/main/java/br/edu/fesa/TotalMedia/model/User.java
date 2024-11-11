@@ -53,15 +53,15 @@ public class User implements Serializable {
   @Column(name = "IMAGE", nullable = true)
   private String image; // Para armazenar o caminho ou URL da imagem do usuário
 
-  @Column(name = "IS_USING_2FA", nullable = false)
-  private boolean isUsing2FA; // Para indicar se o usuário está usando 2FA
+  @Column(name = "IS_USING_2FA", nullable = true)
+  private boolean isUsing2FA = false; // Para indicar se o usuário está usando 2FA
 
   // Adicionando os novos campos
   @Column(name = "BIO", nullable = true, length = 500)
   private String bio; // Para armazenar a biografia do usuário
 
-  @Column(name = "ACTIVE", nullable = false)
-  private boolean active; // Para indicar se o usuário está ativo ou não
+  @Column(name = "ACTIVE", nullable = true)
+  private boolean active = true; // Para indicar se o usuário está ativo ou não
 
   public User() {}
 
@@ -190,11 +190,11 @@ public class User implements Serializable {
     this.image = image;
   }
 
-  public boolean isUsing2FA() {
+  public boolean getIsUsing2FA() {
     return isUsing2FA;
   }
 
-  public void setUsing2FA(boolean isUsing2FA) {
+  public void setIsUsing2FA(boolean isUsing2FA) {
     this.isUsing2FA = isUsing2FA;
   }
 
@@ -206,7 +206,7 @@ public class User implements Serializable {
     this.bio = bio;
   }
 
-  public boolean isActive() {
+  public boolean getActive() {
     return active;
   }
 

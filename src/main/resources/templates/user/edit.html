@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Editar Usuário</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            h1 {
+                font-size: 1.5rem;
+                color: #333;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .btn-right {
+                float: right;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-4">
+            <a href="#" th:href="@{/home}" class="btn btn-info btn-right">Principal</a>
+            <h1>Editar Usuário</h1>
+            <form th:action="@{/user/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+                <!-- ID field (readonly) -->
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" th:field="*{id}" readonly required>
+                </div>
+                <!-- Nome -->
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Nome" maxlength="50" required>
+                </div>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" required>
+                </div>
+                <!-- Bio -->
+                <div class="form-group">
+                    <label for="bio">Biografia</label>
+                    <textarea class="form-control" id="bio" th:field="*{bio}" placeholder="Bio" maxlength="500"></textarea>
+                </div>
+                <!-- Campo selecionável para userGender -->
+                <div class="form-group">
+                    <label for="userGender">Gênero</label>
+                    <select class="form-control" id="userGender" th:field="*{userGender}" required>
+                        <option value="" disabled>Selecione o Gênero</option>
+                        <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender}"
+                                th:selected="${gender == user.userGender}">Gênero</option>
+                    </select>
+                </div>
+                <!-- Campo selecionável para userRole -->
+                <div class="form-group">
+                    <label for="userRole">Função</label>
+                    <select class="form-control" id="userRole" th:field="*{userRole}" required>
+                        <option value="" disabled>Selecione a Função</option>
+                        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" 
+                                th:selected="${role == user.userRole}">Função</option>
+                    </select>
+                </div>
+                <!-- Active (select) -->
+                <div class="form-group">
+                    <label for="active">Ativo</label>
+                    <select class="form-control" id="active" th:field="*{active}">
+                        <option th:value="true">Sim</option>
+                        <option th:value="false">Não</option>
+                    </select>
+                </div>
+                <!-- Using 2FA (select) -->
+                <div class="form-group">
+                    <label for="isUsing2FA">Usa 2FA</label>
+                    <select class="form-control" id="isUsing2FA" th:field="*{isUsing2FA}">
+                        <option th:value="true">Sim</option>
+                        <option th:value="false">Não</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="#" th:href="@{/user/list}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </body>
+</html>
