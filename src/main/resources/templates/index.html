@@ -33,36 +33,39 @@
 
     <!-- Page content (this part will change depending on the page) -->
     <main>
-        <h1>Welcome!</h1>
-        <h2>Esta é a página home do TotalMedia</h2>
+        <h1>Welcome to TotalMedia!</h1>
+        <h2>Discover the latest movies, series, and trending content</h2>
 
         <!-- Authenticated User Section -->
         <div sec:authorize="isAuthenticated()">
             <h3>Olá, <span th:text="${#authentication.name}">Usuário</span>!</h3>
-            <p>Email: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
-            <p>Imagem: <img th:src="${#authentication.principal.image}" alt="User Image" /></p>
+            <p>Seja bem-vindo de volta! Você está logado como: <strong><span th:text="${#authentication.name}">Usuário</span></strong></p>
+            <p>Endereço de e-mail associado: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+            <p>Imagem do perfil: <img th:src="${#authentication.principal.image}" alt="User Image" class="user-profile-image"/></p>
             <p>
-                Papéis:
+                Você tem os seguintes papéis de usuário:
                 <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span>
             </p>
             <p>
-                Usa 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Sim' : 'Não'}">Não</span>
+                Status de autenticação em 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Ativado' : 'Desativado'}">Desativado</span>
             </p>
+            <p>Para mais segurança, recomendamos ativar a autenticação de dois fatores (2FA) na sua conta.</p>
             <form th:action="@{/logout}" method="post">
-                <button type="submit">Logout</button>
+                <button type="submit">Sair</button>
             </form>
         </div>
 
         <!-- Not Authenticated User Section -->
         <div sec:authorize="!isAuthenticated()">
-            <h3>Você não está autenticado. Por favor, faça login.</h3>
-            <button th:href="@{/login}" onclick="location.href='@{/login}'">Login</button>
+            <h3>Você não está autenticado. Faça login para continuar.</h3>
+            <p>Acesse sua conta ou crie uma nova para aproveitar todos os recursos do TotalMedia!</p>
+            <button th:href="@{/login}" onclick="location.href='@{/login}'">Fazer Login</button>
         </div>
     </main>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+        <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
     </footer>
 </body>
 </html>

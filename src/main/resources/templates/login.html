@@ -1,19 +1,56 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>Login</title>
+    <title>Login - TotalMedia</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-    <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="username" required/>
-        <br/>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required/>
-        <br/>
-        <button type="submit">Login</button>
-    </form>
+    <!-- Header with navigation and user info -->
+    <header>
+        <div class="navbar">
+            <a th:href="@{/}" class="logo">TotalMedia</a>
+            <nav class="nav-links">
+                <a th:href="@{/movies}">Movies</a>
+                <a th:href="@{/series}">Series</a>
+                <a th:href="@{/trending}">Trending</a>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." />
+            </div>
+            <!-- Authentication buttons (visible when not authenticated) -->
+            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Sign In</a>
+                <a th:href="@{/register}">Sign Up</a>
+            </div>
+            <!-- User info (visible when authenticated) -->
+            <div class="user-info" sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.name}">User</span>
+                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image"/>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Page Content -->
+    <main>
+        <h1>Login</h1>
+        <form th:action="@{/login}" method="post">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="username" required />
+            <br/>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+            <br/>
+            <button type="submit">Login</button>
+        </form>
+        <div class="auth-buttons">
+            <p>Don't have an account? <a th:href="@{/register}">Sign Up</a></p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+    </footer>
 </body>
 </html>
