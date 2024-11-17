@@ -2,18 +2,26 @@ package br.edu.fesa.TotalMedia.security;
 
 import br.edu.fesa.TotalMedia.model.User;
 import br.edu.fesa.TotalMedia.repository.UserRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +51,7 @@ public class SecurityConfig {
             (form) ->
                 form.loginPage("/login") // Esta é a URL que o Spring Security usa para login
                     .defaultSuccessUrl("/home", true) // Redireciona após o login
+                    .successHandler(new CustomSuccessHandler()) // Adiciona o handler personalizado
                     .permitAll())
             
         .logout(
@@ -94,6 +103,35 @@ public UserDetailsService userDetailsService() {
         );
     };
 }
+
+@Component
+public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Override
+    protected void handle(HttpServletRequest request, HttpServletResponse response,
+                          Authentication authentication) throws IOException, ServletException {
+        String role = authentication.getAuthorities().stream()
+            .findFirst()
+            .map(GrantedAuthority::getAuthority)
+            .orElse("ROLE_USER");
+
+        String redirectUrl;
+
+        switch (role) {
+            case "ROLE_ADMIN":
+                redirectUrl = "/admin/menu";
+                break;
+            case "ROLE_CRITIC":
+                redirectUrl = "/critic/menu";
+                break;
+            default:
+                redirectUrl = "/home";
+        }
+
+        response.sendRedirect(redirectUrl);
+    }
+}
+
 
   @Bean
   public PasswordEncoder passwordEncoder() {

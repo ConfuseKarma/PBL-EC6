@@ -21,13 +21,14 @@
             <div class="auth-buttons" sec:authorize="!isAuthenticated()">
                 <a th:href="@{/login}">Sign In</a>
                 <a th:href="@{/user/create}">Sign Up</a>
-                
             </div>
             <!-- User info (visible when authenticated) -->
             <div class="user-info" sec:authorize="isAuthenticated()">
                 <span th:text="${#authentication.name}">User</span>
                 <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
-                <a th:href="@{/logout}">Logout</a>
+                 <form th:action="@{/logout}" method="post">
+                <button type="submit">Log Out</button>
+            </form>
             </div>
         </div>
     </header>
@@ -52,9 +53,14 @@
             </p>
             <p>Para mais segurança, recomendamos ativar a autenticação de dois fatores (2FA) na sua conta.</p>
             
-            <!-- Botão "Usuários" visível apenas para ADMIN -->
+            <!-- Seção para Administradores -->
             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/user/list}" class="btn btn-info">Usuários</a>
+                <h3>Admin Menu</h3>
+                <ul>
+                    <li><a th:href="@{/user/list}">Gerenciar Usuários</a></li>
+                    <li><a th:href="@{/movies}">Gerenciar Filmes</a></li>
+                    <li><a th:href="@{/series}">Gerenciar Séries</a></li>
+                </ul>
             </div>
 
             <form th:action="@{/logout}" method="post">

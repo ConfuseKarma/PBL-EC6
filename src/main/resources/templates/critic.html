@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Menu</title>
+</head>
+<body>
+    <header>
+        <h1>Admin Menu</h1>
+    </header>
+    <main>
+        <h2>Bem-vindo, Administrador!</h2>
+        <ul>
+            <li><a th:href="@{/user/list}">Gerenciar Usuários</a></li>
+            <li><a th:href="@{/movies}">Gerenciar Filmes</a></li>
+            <li><a th:href="@{/series}">Gerenciar Séries</a></li>
+        </ul>
+    </main>
+</body>
+</html>
