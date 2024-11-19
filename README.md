@@ -86,7 +86,7 @@ O projeto é estruturado com base nas seguintes classes principais:
 
 ## Diagrama  de Implementação 
 
-![ImagemCorrigida](https://github.com/user-attachments/assets/46e1bd40-9ccb-4d94-9222-a774ff2f1b25)
+![Imagem2Corrigida](https://github.com/user-attachments/assets/72c2cf30-0094-41da-810c-d70efb79b589)
 
 ## Estrutura do Projeto
 
