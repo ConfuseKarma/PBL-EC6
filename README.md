@@ -85,7 +85,8 @@ O projeto é estruturado com base nas seguintes classes principais:
 - **H2 Database: é um banco de dados em memória.
 
 ## Diagrama  de Implementação 
-colar diagrama
+
+![ImagemCorrigida](https://github.com/user-attachments/assets/46e1bd40-9ccb-4d94-9222-a774ff2f1b25)
 
 ## Estrutura do Projeto
 
