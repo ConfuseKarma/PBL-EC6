@@ -30,11 +30,15 @@
         <form action="#" th:action="@{/user/save}" th:object="${user}" method="post">
             <div class="form-group">
                 <label for="name">Nome</label>
-                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name" maxlength="50" required>
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Nome" maxlength="50" required>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="email" maxlength="50" required>
+                <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" maxlength="50" required>
+                <!-- Exemplo de mensagem de erro customizada -->
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}">
+                    E-mail inválido! Certifique-se de que está no formato correto.
+                </div>
             </div>
             <!-- Campo de senha -->
             <div class="form-group">
@@ -65,7 +69,7 @@
             <!-- Campo bio (opcional para todos os usuários) -->
             <div class="form-group">
                 <label for="bio">Bio</label>
-                <input type="text" class="form-control" id="bio" th:field="*{bio}" placeholder="bio" maxlength="500">
+                <input type="text" class="form-control" id="bio" th:field="*{bio}" placeholder="Bio" maxlength="500">
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="#" th:href="@{/user/list}" class="btn btn-secondary">Cancelar</a>

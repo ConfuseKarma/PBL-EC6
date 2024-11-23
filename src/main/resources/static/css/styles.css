@@ -306,8 +306,41 @@ table .btn-primary {
     border-color: #1e88e5;
 }
 
-/* Botões de ação na tabela */
 table .btn:hover {
     background-color: #7f39fb;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+table .btn-warning:hover {
+    background-color: #e65100;
+}
+
+table .btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+table .btn-primary:hover {
+    background-color: #1565c0;
+}
+
+/*  Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    header, footer, table {
+        background-color: #1e1e1e;
+    }
+
+    th, td {
+        color: #e0e0e0;
+    }
+
+    .btn {
+        background-color: #bb86fc;
+        border-color: #bb86fc;
+    }
+}
+

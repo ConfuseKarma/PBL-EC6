@@ -4,53 +4,10 @@
         <meta charset="UTF-8">
         <title>Lista de Usuários</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            .container {
-                margin-top: 40px;
-            }
-            h1 {
-                font-size: 1.5rem;
-                color: #333;
-                font-family: 'Roboto', sans-serif;
-                font-weight: 300;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-            .btn-primary {
-                margin-right: 10px;
-            }
-            table {
-                margin-top: 20px;
-            }
-            th, td {
-                text-align: center;
-                vertical-align: middle;
-            }
-            .btn-warning {
-                margin-right: 5px;
-            }
-            /* Custom styles for header and footer */
-            header {
-                background-color: #343a40;
-                padding: 15px;
-                color: white;
-            }
-            header .navbar a {
-                color: white;
-                text-decoration: none;
-                margin-right: 15px;
-            }
-            footer {
-                background-color: #f1f1f1;
-                padding: 10px;
-                text-align: center;
-                margin-top: 30px;
-            }
-        </style>
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
     </head>
     <body>
-        <!-- Header -->
+        <!-- Header with navigation and user info -->
         <header>
             <div class="navbar">
                 <a href="/" class="logo">TotalMedia</a>
@@ -59,6 +16,20 @@
                     <a href="/series">Series</a>
                     <a href="/trending">Trending</a>
                 </nav>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." />
+                </div>
+                <div class="auth-buttons">
+                    <a href="/login">Sign In</a>
+                    <a href="/user/create">Sign Up</a>
+                </div>
+                <div class="user-info" sec:authorize="isAuthenticated()">
+                    <!-- Exibe o nome do usuário logado (seja admin ou outro) -->
+                    <span th:text="${#authentication.name}">Username</span>
+                    <!-- Exibe a imagem do usuário logado -->
+                    <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
+                    <a href="/logout">Logout</a>
+                </div>
             </div>
         </header>
 
