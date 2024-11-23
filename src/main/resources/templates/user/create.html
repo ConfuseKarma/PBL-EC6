@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Inserir Novo Usuário</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,6 +25,32 @@
     </style>
 </head>
 <body>
+    <!-- Header with navigation and user info -->
+    <header>
+        <div class="navbar">
+            <a th:href="@{/}" class="logo">TotalMedia</a>
+            <nav class="nav-links">
+                <a th:href="@{/movies}">Movies</a>
+                <a th:href="@{/series}">Series</a>
+                <a th:href="@{/trending}">Trending</a>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." />
+            </div>
+            <!-- Authentication buttons (visible when not authenticated) -->
+            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Sign In</a>
+                <a th:href="@{/user/create}">Sign Up</a>
+            </div>
+            <!-- User info (visible when authenticated) -->
+            <div class="user-info" sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.name}">User</span>
+                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </header>
+
     <div class="container mt-4">
         <a href="#" th:href="@{/home}" class="btn btn-info btn-right">Principal</a>
         <h1>Novo Usuário</h1>
@@ -35,22 +62,18 @@
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" maxlength="50" required>
-                <!-- Exemplo de mensagem de erro customizada -->
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}">
                     E-mail inválido! Certifique-se de que está no formato correto.
                 </div>
             </div>
-            <!-- Campo de senha -->
             <div class="form-group">
                 <label for="password">Senha</label>
                 <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Senha" required>
             </div>
-            <!-- Campo de confirmação de senha -->
             <div class="form-group">
                 <label for="confirmPassword">Confirmar Senha</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua Senha" required>
             </div>
-            <!-- Campo selecionável para userGender -->
             <div class="form-group">
                 <label for="userGender">Gênero</label>
                 <select class="form-control" id="userGender" th:field="*{userGender}" required>
@@ -58,7 +81,6 @@
                     <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender}">Gênero</option>
                 </select>
             </div>
-            <!-- Campo selecionável para userRole (visível apenas para ADMIN) -->
             <div class="form-group" sec:authorize="hasRole('ROLE_ADMIN')">
                 <label for="userRole">Função</label>
                 <select class="form-control" id="userRole" th:field="*{userRole}">
@@ -66,7 +88,6 @@
                     <option th:each="role : ${roles}" th:value="${role}" th:text="${role}">Função</option>
                 </select>
             </div>
-            <!-- Campo bio (opcional para todos os usuários) -->
             <div class="form-group">
                 <label for="bio">Bio</label>
                 <input type="text" class="form-control" id="bio" th:field="*{bio}" placeholder="Bio" maxlength="500">
@@ -75,5 +96,15 @@
             <a href="#" th:href="@{/user/list}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

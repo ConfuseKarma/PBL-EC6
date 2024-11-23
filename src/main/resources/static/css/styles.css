@@ -5,11 +5,7 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
+/* Estilo global */
 body {
     font-family: 'Poppins', sans-serif; /* Fonte sofisticada */
     background-color: #121212; /* Fundo escuro */
@@ -179,40 +175,6 @@ button:focus {
     outline: none;
 }
 
-/* Botões principais: Inserir e Main Menu */
-.button-main-menu, .button-inserir {
-    font-size: 1.2rem;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    display: inline-block;
-    text-align: center;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.button-main-menu {
-    background-color: #1e88e5; /* Azul para o Main Menu */
-    color: #fff;
-    border: 1px solid #1e88e5;
-}
-
-.button-main-menu:hover {
-    background-color: #1565c0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.button-inserir {
-    background-color: #4caf50; /* Verde para o Inserir */
-    color: #fff;
-    border: 1px solid #4caf50;
-}
-
-.button-inserir:hover {
-    background-color: #388e3c;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
 /* Layout responsivo */
 @media (max-width: 768px) {
     .navbar {
@@ -343,4 +305,3 @@ table .btn-primary:hover {
         border-color: #bb86fc;
     }
 }
-
