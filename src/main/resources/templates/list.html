@@ -30,9 +30,38 @@
             .btn-warning {
                 margin-right: 5px;
             }
+            /* Custom styles for header and footer */
+            header {
+                background-color: #343a40;
+                padding: 15px;
+                color: white;
+            }
+            header .navbar a {
+                color: white;
+                text-decoration: none;
+                margin-right: 15px;
+            }
+            footer {
+                background-color: #f1f1f1;
+                padding: 10px;
+                text-align: center;
+                margin-top: 30px;
+            }
         </style>
     </head>
     <body>
+        <!-- Header -->
+        <header>
+            <div class="navbar">
+                <a href="/" class="logo">TotalMedia</a>
+                <nav class="nav-links">
+                    <a href="/movies">Movies</a>
+                    <a href="/series">Series</a>
+                    <a href="/trending">Trending</a>
+                </nav>
+            </div>
+        </header>
+
         <div class="container">
             <h1>Lista de Usuários</h1>
             <div class="d-flex justify-content-between mb-3">
@@ -44,7 +73,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
-                        <th>e-mail</th>
+                        <th>E-mail</th>
                         <th>Gender</th>
                         <th>Role</th>
                         <th>Bio</th>
@@ -65,7 +94,6 @@
                         <td th:text="${user.isUsing2FA}"></td>
                         <td th:text="${user.active}"></td>
                         <td th:text="${user.password}"></td>
-                        
                         <td>
                             <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-warning btn-sm">Editar</a>
                         </td>
@@ -76,6 +104,11 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
+        </footer>
 
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
