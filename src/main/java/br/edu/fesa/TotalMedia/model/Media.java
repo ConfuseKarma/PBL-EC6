@@ -1,199 +1,159 @@
 package br.edu.fesa.TotalMedia.model;
 
-import br.edu.fesa.TotalMedia.enumerator.Genre;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_MEDIA", schema = "TOTALMEDIA")
 public class Media implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @Basic(optional = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID_MEDIA")
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_MEDIA")
+    private Integer id;  // Alterado para Integer
 
-  @Column(name = "TITLE", nullable = false, length = 255)
-  private String title;
+    @Column(name = "TITLE", nullable = false, length = 255)
+    private String title;
 
-  @Column(name = "SUBTITLE", nullable = true, length = 255)
-  private String subtitle;
+    @Column(name = "SUBTITLE", nullable = true, length = 255)
+    private String subtitle;
 
-  // Alterado para armazenar o valor inteiro do enum
-  @Column(name = "ID_GENRE", nullable = false)
-  private int genreId;
+    @Column(name = "RELEASE_DATE", nullable = false)
+    private LocalDateTime releaseDate;
 
-  @Column(name = "RELEASE_DATE", nullable = false)
-  private LocalDateTime releaseDate;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ID_DIRECTOR", referencedColumnName = "ID_DIRECTOR")
+    private Director director;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "ID_DIRECTOR", referencedColumnName = "ID_DIRECTOR")
-  private Director director;
+    @Column(name = "IMAGE", nullable = true)
+    private String image;
 
-  @Column(name = "IMAGE", nullable = true)
-  private String image;
+    @Column(name = "RATING", nullable = true, length = 10)
+    private String rating;
 
-  @Column(name = "RATING", nullable = true, length = 10)
-  private String rating;
+    @Column(name = "SYNOPSIS", nullable = true, length = 500)
+    private String synopsis;
 
-  @Column(name = "SYNOPSIS", nullable = true, length = 500)
-  private String synopsis;
+    @Column(name = "YEAR", nullable = true)
+    private Integer year;
 
-  @Column(name = "YEAR", nullable = true)
-  private Integer year;
+    @Column(name = "PRODUCTION_COMPANY", nullable = true, length = 255)
+    private String productionCompany;
 
-  @Column(name = "PRODUCTION_COMPANY", nullable = true, length = 255)
-  private String productionCompany;
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GenreMedia> genres = new ArrayList<>();  // Inicializando a lista de gêneros
 
-  public Media() {}
+    public Media() {}
 
-  public Media(
-      String title,
-      String subtitle,
-      Genre genre,
-      LocalDateTime releaseDate,
-      Director director,
-      String image,
-      String rating,
-      String synopsis,
-      Integer year,
-      String productionCompany) {
-    this.title = title;
-    this.subtitle = subtitle;
-    this.genreId = genre.getId();  // Atribuindo o ID do gênero ao invés de objeto
-    this.releaseDate = releaseDate;
-    this.director = director;
-    this.image = image;
-    this.rating = rating;
-    this.synopsis = synopsis;
-    this.year = year;
-    this.productionCompany = productionCompany;
-  }
+    public Media(String title, String subtitle, LocalDateTime releaseDate, Director director,
+                 String image, String rating, String synopsis, Integer year, String productionCompany) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.releaseDate = releaseDate;
+        this.director = director;
+        this.image = image;
+        this.rating = rating;
+        this.synopsis = synopsis;
+        this.year = year;
+        this.productionCompany = productionCompany;
+    }
 
-  public Media(
-      int id,
-      String title,
-      String subtitle,
-      Genre genre,
-      LocalDateTime releaseDate,
-      Director director,
-      String image,
-      String rating,
-      String synopsis,
-      Integer year,
-      String productionCompany) {
-    this.id = id;
-    this.title = title;
-    this.subtitle = subtitle;
-    this.genreId = genre.getId();  // Atribuindo o ID do gênero ao invés de objeto
-    this.releaseDate = releaseDate;
-    this.director = director;
-    this.image = image;
-    this.rating = rating;
-    this.synopsis = synopsis;
-    this.year = year;
-    this.productionCompany = productionCompany;
-  }
+    // Getters e Setters
+    public Integer getId() {  // Alterado para Integer
+        return id;
+    }
 
-  // Getters e Setters
-  public int getId() {
-    return id;
-  }
+    public void setId(Integer id) {  // Alterado para Integer
+        this.id = id;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  public String getTitle() {
-    return title;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+    public String getSubtitle() {
+        return subtitle;
+    }
 
-  public String getSubtitle() {
-    return subtitle;
-  }
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
 
-  public void setSubtitle(String subtitle) {
-    this.subtitle = subtitle;
-  }
+    public LocalDateTime getReleaseDate() {
+        return releaseDate;
+    }
 
-  // Mudança para obter o enum Genre a partir do ID
-  public Genre getGenre() {
-    return Genre.fromId(genreId);  // Retorna o enum correspondente ao ID
-  }
+    public void setReleaseDate(LocalDateTime releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-  public void setGenre(Genre genre) {
-    this.genreId = genre.getId();  // Armazena o ID do gênero no banco
-  }
+    public Director getDirector() {
+        return director;
+    }
 
-  public LocalDateTime getReleaseDate() {
-    return releaseDate;
-  }
+    public void setDirector(Director director) {
+        this.director = director;
+    }
 
-  public void setReleaseDate(LocalDateTime releaseDate) {
-    this.releaseDate = releaseDate;
-  }
+    public String getImage() {
+        return image;
+    }
 
-  public Director getDirector() {
-    return director;
-  }
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-  public void setDirector(Director director) {
-    this.director = director;
-  }
+    public String getRating() {
+        return rating;
+    }
 
-  public String getImage() {
-    return image;
-  }
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
 
-  public void setImage(String image) {
-    this.image = image;
-  }
+    public String getSynopsis() {
+        return synopsis;
+    }
 
-  public String getRating() {
-    return rating;
-  }
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
 
-  public void setRating(String rating) {
-    this.rating = rating;
-  }
+    public Integer getYear() {
+        return year;
+    }
 
-  public String getSynopsis() {
-    return synopsis;
-  }
+    public void setYear(Integer year) {
+        this.year = year;
+    }
 
-  public void setSynopsis(String synopsis) {
-    this.synopsis = synopsis;
-  }
+    public String getProductionCompany() {
+        return productionCompany;
+    }
 
-  public Integer getYear() {
-    return year;
-  }
+    public void setProductionCompany(String productionCompany) {
+        this.productionCompany = productionCompany;
+    }
 
-  public void setYear(Integer year) {
-    this.year = year;
-  }
+    // Método para adicionar gêneros à lista
+    public void addGenre(Genre genre) {
+        this.genres.add(new GenreMedia(this, genre));
+    }
 
-  public String getProductionCompany() {
-    return productionCompany;
-  }
+    public List<GenreMedia> getGenres() {
+        return genres;
+    }
 
-  public void setProductionCompany(String productionCompany) {
-    this.productionCompany = productionCompany;
-  }
+    public void setGenres(List<GenreMedia> genres) {
+        this.genres = genres;
+    }
 }

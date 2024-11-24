@@ -1,7 +1,9 @@
 package br.edu.fesa.TotalMedia.service;
 
 import br.edu.fesa.TotalMedia.model.Media;
+import br.edu.fesa.TotalMedia.model.GenreMedia;
 import br.edu.fesa.TotalMedia.repository.MediaRepository;
+import br.edu.fesa.TotalMedia.repository.GenreMediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +16,33 @@ public class MediaService {
     @Autowired
     private MediaRepository mediaRepository;
 
+    @Autowired
+    private GenreMediaRepository genreMediaRepository;
+
     // Salvar ou atualizar uma mídia
     public Media saveMedia(Media media) {
-        // Salva o objeto de mídia, criando ou atualizando
-        return mediaRepository.save(media);
+        // Salva a mídia
+        Media savedMedia = mediaRepository.save(media);
+
+        // Salva as associações de gêneros (a mídia pode ter mais de um gênero)
+        if (media.getGenres() != null) {
+            for (GenreMedia genreMedia : media.getGenres()) {
+                genreMedia.setMedia(savedMedia); // Associa a mídia ao gênero
+                genreMediaRepository.save(genreMedia);
+            }
+        }
+
+        return savedMedia;
     }
 
+    // Atualizar uma mídia
     public Media updateMedia(Media media) {
         // Verifica se a mídia existe no banco de dados
         Media existingMedia = mediaRepository.findById(media.getId()).orElseThrow(() -> new IllegalArgumentException("Mídia não encontrada"));
 
-        // Atualiza os outros campos (título, gênero, data de lançamento, etc.)
+        // Atualiza os campos da mídia
         existingMedia.setTitle(media.getTitle());
         existingMedia.setSubtitle(media.getSubtitle());
-        existingMedia.setGenre(media.getGenre());
         existingMedia.setReleaseDate(media.getReleaseDate());
         existingMedia.setDirector(media.getDirector());
         existingMedia.setImage(media.getImage());
@@ -35,6 +50,15 @@ public class MediaService {
         existingMedia.setSynopsis(media.getSynopsis());
         existingMedia.setYear(media.getYear());
         existingMedia.setProductionCompany(media.getProductionCompany());
+
+        // Atualiza as associações de gêneros (após remover os antigos)
+        genreMediaRepository.deleteByMedia(existingMedia); // Remove associações antigas
+        if (media.getGenres() != null) {
+            for (GenreMedia genreMedia : media.getGenres()) {
+                genreMedia.setMedia(existingMedia); // Associa a mídia ao gênero
+                genreMediaRepository.save(genreMedia);
+            }
+        }
 
         // Retorna a mídia atualizada
         return mediaRepository.save(existingMedia);
