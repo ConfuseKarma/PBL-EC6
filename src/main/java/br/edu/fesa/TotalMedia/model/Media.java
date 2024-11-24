@@ -5,9 +5,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
 @Entity
 @Table(name = "TB_MEDIA", schema = "TOTALMEDIA")
+@Inheritance(strategy = InheritanceType.JOINED)
+
 public class Media implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,7 +55,7 @@ public class Media implements Serializable {
     public Media() {}
 
     public Media(String title, String subtitle, LocalDateTime releaseDate, Director director,
-                 String image, String rating, String synopsis, Integer year, String productionCompany) {
+                 String image, String rating, String synopsis, Integer year, String productionCompany, Genre genre) {
         this.title = title;
         this.subtitle = subtitle;
         this.releaseDate = releaseDate;
@@ -61,7 +65,9 @@ public class Media implements Serializable {
         this.synopsis = synopsis;
         this.year = year;
         this.productionCompany = productionCompany;
+        addGenre(genre);  // Adiciona o gênero à lista
     }
+
 
     // Getters e Setters
     public Integer getId() {  // Alterado para Integer
