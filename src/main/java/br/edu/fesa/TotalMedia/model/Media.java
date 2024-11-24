@@ -1,5 +1,6 @@
 package br.edu.fesa.TotalMedia.model;
 
+import br.edu.fesa.TotalMedia.enumerator.Genre;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "TB_BOOK", schema = "TOTALMEDIA")
+@Table(name = "TB_MEDIA", schema = "TOTALMEDIA")
 public class Media implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -26,13 +27,13 @@ public class Media implements Serializable {
 
   @Column(name = "TITLE", nullable = false, length = 255)
   private String title;
-  
+
   @Column(name = "SUBTITLE", nullable = true, length = 255)
   private String subtitle;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "ID_GENRE", referencedColumnName = "ID_GENRE")
-  private Genre genre;
+  // Alterado para armazenar o valor inteiro do enum
+  @Column(name = "ID_GENRE", nullable = false)
+  private int genreId;
 
   @Column(name = "RELEASE_DATE", nullable = false)
   private LocalDateTime releaseDate;
@@ -71,7 +72,7 @@ public class Media implements Serializable {
       String productionCompany) {
     this.title = title;
     this.subtitle = subtitle;
-    this.genre = genre;
+    this.genreId = genre.getId();  // Atribuindo o ID do gênero ao invés de objeto
     this.releaseDate = releaseDate;
     this.director = director;
     this.image = image;
@@ -96,7 +97,7 @@ public class Media implements Serializable {
     this.id = id;
     this.title = title;
     this.subtitle = subtitle;
-    this.genre = genre;
+    this.genreId = genre.getId();  // Atribuindo o ID do gênero ao invés de objeto
     this.releaseDate = releaseDate;
     this.director = director;
     this.image = image;
@@ -122,7 +123,7 @@ public class Media implements Serializable {
   public void setTitle(String title) {
     this.title = title;
   }
-  
+
   public String getSubtitle() {
     return subtitle;
   }
@@ -131,12 +132,13 @@ public class Media implements Serializable {
     this.subtitle = subtitle;
   }
 
+  // Mudança para obter o enum Genre a partir do ID
   public Genre getGenre() {
-    return genre;
+    return Genre.fromId(genreId);  // Retorna o enum correspondente ao ID
   }
 
   public void setGenre(Genre genre) {
-    this.genre = genre;
+    this.genreId = genre.getId();  // Armazena o ID do gênero no banco
   }
 
   public LocalDateTime getReleaseDate() {

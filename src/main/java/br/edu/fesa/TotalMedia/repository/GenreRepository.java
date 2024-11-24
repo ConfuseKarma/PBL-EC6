@@ -1,6 +1,6 @@
 package br.edu.fesa.TotalMedia.repository;
 
-import br.edu.fesa.TotalMedia.model.Genre;
+import br.edu.fesa.TotalMedia.enumerator.Genre;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
