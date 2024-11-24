@@ -1,69 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Usuários - TotalMedia</title>
+    <title>Welcome | TotalMedia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="navbar">
-            <a th:href="@{/}" class="logo">TotalMedia</a>
-            <nav class="nav-links">
-                <a th:href="@{/movies}">Movies</a>
-                <a th:href="@{/series}">Series</a>
-                <a th:href="@{/trending}">Trending</a>
-            </nav>
-            <div class="search-bar">
-                <input type="text" placeholder="Search..." />
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/movies}">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/series}">Series</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/trending}">Trending</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    </form>
+                    <div class="d-flex ms-2">
+                        <div class="d-flex" sec:authorize="!isAuthenticated()">
+                            <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                            <a class="btn btn-primary" th:href="@{/user/create}">Sign Up</a>
+                        </div>
+                        <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                <span th:text="${#authentication.name}">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}">Sign In</a>
-                <a th:href="@{/user/create}">Sign Up</a>
-            </div>
-            <div class="user-info" sec:authorize="isAuthenticated()">
-                <span th:text="${#authentication.name}">User</span>
-                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
-                <a th:href="@{/logout}">Logout</a>
-            </div>
-        </div>
-    </header>
+        </nav>
+    </div>
 
-    <!-- Page content -->
-    <main>
-        <h1>Lista de Usuários</h1>
-        <div class="user-list-container">
-            <table class="user-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Papel</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="user : ${users}">
-                        <td th:text="${user.idUser}">1</td>
-                        <td th:text="${user.name}">John Doe</td>
-                        <td th:text="${user.email}">john.doe@example.com</td>
-                        <td th:text="${user.role.roleType}">USER</td>
-                        <td>
-                            <a th:href="@{/user/edit/{id}(id=${user.idUser})}" class="btn btn-edit">Editar</a>
-                            <form th:action="@{/user/delete/{id}(id=${user.idUser})}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-delete">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
+    <!-- Fragmento de conteúdo da página -->
+    <div th:replace="${content}"></div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
         <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
     </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

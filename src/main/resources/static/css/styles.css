@@ -1,307 +1,110 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilo global */
+/* Estilo da Fonte Spectral */
 body {
-    font-family: 'Poppins', sans-serif; /* Fonte sofisticada */
-    background-color: #121212; /* Fundo escuro */
-    color: #e0e0e0; /* Texto claro */
-    line-height: 1.6;
+    font-family: 'Spectral', serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh; /* Garantir que o body tenha altura mínima */
     display: flex;
     flex-direction: column;
-}
-
-/* Cabeçalho */
-header {
-    background-color: #1e1e1e; /* Fundo levemente mais claro */
-    padding: 15px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.navbar {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
 }
 
-.navbar a {
-    color: #ffffff;
-    text-decoration: none;
+/* Para o modo escuro */
+.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+/* Para o modo claro */
+body {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Navbar Dark Mode Customization */
+.navbar {
+    background-color: #121212; /* Fundo escuro agradável */
+    padding: 1.2rem 1.5rem; /* Aumentar o padding */
+}
+
+.navbar-brand {
+    font-size: 1.5rem; /* Aumentar o tamanho da fonte */
     font-weight: 700;
-    margin: 0 15px;
-    transition: color 0.3s;
 }
 
-.navbar a:hover {
-    color: #bb86fc; /* Destaque em roxo */
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #bb86fc; /* Destaque no logo */
-}
-
-/* Links de navegação */
-.nav-links {
-    display: flex;
-    align-items: center;
-}
-
-/* Barra de pesquisa */
-.search-bar {
-    flex-grow: 1;
-    margin: 0 20px;
-    position: relative;
-    max-width: 400px;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #333;
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    transition: border-color 0.3s;
-}
-
-.search-bar input:focus {
-    border-color: #bb86fc;
-    outline: none;
-}
-
-/* Botões de autenticação */
-.auth-buttons a, .user-info a {
-    color: white;
+.navbar-nav .nav-item .nav-link {
+    font-size: 1.1rem;
     margin-left: 15px;
-    padding: 8px 15px;
+    margin-right: 15px;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #444; /* Cor de hover */
     border-radius: 5px;
-    text-decoration: none;
-    background-color: #bb86fc;
-    transition: background-color 0.3s;
 }
 
-.auth-buttons a:hover, .user-info a:hover {
-    background-color: #7f39fb;
+/* Ajuste nos botões */
+.btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
 }
 
-/* Conteúdo principal */
-main {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #1e1e1e; /* Fundo da seção principal */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
-}
-
-/* Rodapé */
-footer {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: auto; /* Faz o footer ir para o final */
-    font-size: 0.9rem;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Imagem do usuário */
-.user-image-navbar {
-    max-width: 45px;
-    max-height: 45px;
-    border-radius: 50%;
-    border: 2px solid #bb86fc;
-    transition: border-color 0.3s;
-    object-fit: cover;
-    margin-left: -10px;
-}
-
-.user-info {
-    display: flex;
-    align-items: center; 
-    gap: 15px; 
-}
-
-.user-info span {
-    color: #e0e0e0; 
-    font-size: 16px;
-}
-
-.user-image-userArea {
-    max-width: 100px;
-    max-height: 100px;
-    margin-left: 10px;
-    border: 2px solid #bb86fc;
-    transition: border-color 0.3s;
-}
-
-.user-image:hover {
-    border-color: #7f39fb;
-}
-
-/* Botões */
-button {
-    font-size: 1rem;
-    padding: 12px 24px;
+/* Botão de alternância de tema */
+.mode-toggle-btn {
+    background-color: #444;
+    color: #fff;
     border: none;
-    border-radius: 8px;
+    font-size: 1.5rem;
+    padding: 10px 15px;
     cursor: pointer;
-    background-color: #bb86fc;
-    color: #fff;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    display: inline-block;
-    text-align: center;
-    margin: 10px;
-    min-width: 150px;
-    font-weight: 600;
-}
-
-button:hover {
-    background-color: #7f39fb;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-button:focus {
-    outline: none;
-}
-
-/* Layout responsivo */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        padding: 10px;
-    }
-
-    .search-bar {
-        margin: 10px 0;
-        max-width: 100%;
-    }
-
-    .auth-buttons a, .user-info a {
-        padding: 6px 10px;
-        font-size: 0.9rem;
-    }
-
-    table, .d-flex {
-        flex-direction: column;
-        padding: 10px;
-    }
-
-    button {
-        min-width: 130px; /* Ajuste para telas menores */
-    }
-}
-
-/* Tabela de usuários */
-table {
-    width: 100%;
-    margin-top: 20px;
-    background-color: #333; /* Fundo escuro para a tabela */
-    border-radius: 10px;
-    overflow: auto; /* Adiciona rolagem quando necessário */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    table-layout: auto; /* Ajuste para melhor quebra de texto */
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
-    word-wrap: break-word; /* Quebra de linha automática */
-    max-width: 600px; /* Ajuste para maior largura das células */
-}
-
-th {
-    background-color: #444; /* Cabeçalho escuro */
-    color: #e0e0e0; /* Texto claro */
-    font-size: 1rem;
-    font-weight: bold;
-    border-bottom: 2px solid #bb86fc; /* Linha abaixo do cabeçalho */
-}
-
-td {
-    background-color: #555; /* Fundo das células */
-    color: #e0e0e0;
-    font-size: 1rem;
-    max-width: 400px; /* Aumenta a largura máxima das células */
-    word-break: break-word; /* Quebra palavras longas em vez de "estourar" a célula */
-    white-space: normal; /* Permite quebra de linha onde necessário */
-}
-
-td#id-cell {
-    white-space: nowrap; /* Impede que o ID quebre */
-}
-
-td .btn {
-    padding: 8px 15px;
     border-radius: 5px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #bb86fc;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    display: inline-block; /* Impede quebra de linha nos botões */
-    white-space: nowrap; /* Garante que o botão não quebre */
 }
 
-table .btn-warning {
-    background-color: #ff9800;
-    border-color: #ff9800;
+.mode-toggle-btn:hover {
+    background-color: #666;
 }
 
-table .btn-danger {
-    background-color: #f44336;
-    border-color: #f44336;
+/* Ajuste na navbar para distribuir os itens */
+.navbar-collapse {
+    justify-content: space-between;
 }
 
-table .btn-primary {
-    background-color: #1e88e5;
-    border-color: #1e88e5;
+/* Sombra para a navbar */
+.navbar {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-table .btn:hover {
-    background-color: #7f39fb;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+/* Estilo do footer */
+footer {
+    background-color: #121212; /* Cor do footer igual à da navbar */
+    color: #fff; /* Cor do texto no footer */
+    padding: 20px 0; /* Padding no footer */
+    text-align: center; /* Centralizar o texto */
+    width: 100%;
+    margin-top: auto; /* Garantir que o footer fique no final da tela */
 }
 
-table .btn-warning:hover {
-    background-color: #e65100;
+/* Ajuste no espaçamento entre botões Sign In e Sign Up */
+.btn-outline-light.me-2, .btn-primary.me-2 {
+    margin-right: 10px; /* Espaço padrão */
 }
 
-table .btn-danger:hover {
-    background-color: #d32f2f;
+.d-flex > .btn {
+    margin-right: 10px; /* Margem padrão para botões em layout flexível */
 }
 
-table .btn-primary:hover {
-    background-color: #1565c0;
-}
-
-/*  Dark Mode */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #121212;
-        color: #e0e0e0;
+/* Para evitar colagem nos dispositivos menores */
+@media (max-width: 768px) {
+    .btn-outline-light.me-2, .btn-primary.me-2 {
+        margin-right: 5px; /* Espaçamento menor em telas pequenas */
     }
+}
 
-    header, footer, table {
-        background-color: #1e1e1e;
-    }
+/* Estilo de hover para os links do footer */
+footer a {
+    color: #fff; /* Cor do link no footer */
+    text-decoration: none;
+}
 
-    th, td {
-        color: #e0e0e0;
-    }
-
-    .btn {
-        background-color: #bb86fc;
-        border-color: #bb86fc;
-    }
+footer a:hover {
+    text-decoration: underline; /* Sublinha ao passar o mouse */
 }

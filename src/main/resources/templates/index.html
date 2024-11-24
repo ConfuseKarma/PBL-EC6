@@ -1,78 +1,125 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>TotalMedia</title>
+    <title>Welcome | TotalMedia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
 </head>
-<body>
-    <!-- Header with navigation and user info -->
-    <header>
-        <div class="navbar">
-            <a th:href="@{/}" class="logo">TotalMedia</a>
-            <nav class="nav-links">
-                <a th:href="@{/movies}">Movies</a>
-                <a th:href="@{/series}">Series</a>
-                <a th:href="@{/trending}">Trending</a>
-            </nav>
-            <div class="search-bar">
-                <input type="text" placeholder="Search..." />
+<body class="dark-mode">
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/movies}">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/series}">Series</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/trending}">Trending</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    </form>
+                    <div class="d-flex ms-2">
+                        <!-- Botões Sign In e Sign Up visíveis quando não autenticado -->
+                        <div class="d-flex" sec:authorize="!isAuthenticated()">
+                            <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                            <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
+                        </div>
+
+                        <!-- Dropdown do usuário autenticado -->
+                        <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                <span th:text="${#authentication.name}">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Botão de alternância do modo -->
+                    <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
+                </div>
             </div>
-            <!-- Authentication buttons (visible when not authenticated) -->
-            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}">Sign In</a>
-                <a th:href="@{/user/create}">Sign Up</a>
-                
-            </div>
-            <!-- User info (visible when authenticated) -->
-            <div class="user-info" sec:authorize="isAuthenticated()">
-                <span th:text="${#authentication.name}">User</span>
-                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
-                <a th:href="@{/logout}">Logout</a>
+        </nav>
+    </div>
+
+    <div th:fragment="content">
+        <!-- Centralizar o texto de "Welcome" -->
+        <div class="container-fluid">
+            <div class="row justify-content-center align-items-center" style="min-height: 40vh;">
+                <div class="col text-center">
+                    <h1 class="display-3">Welcome to TotalMedia!</h1>
+                    <h2 class="lead">Discover the latest movies, series, and trending content</h2>
+                </div>
             </div>
         </div>
-    </header>
-
-    <!-- Page content -->
-    <main>
-        <h1>Welcome to TotalMedia!</h1>
-        <h2>Discover the latest movies, series, and trending content</h2>
 
         <!-- Authenticated User Section -->
         <div sec:authorize="isAuthenticated()">
-            <h3>Olá, <span th:text="${#authentication.name}">Usuário</span>!</h3>
-            <p>Seja bem-vindo de volta! Você está logado como: <strong><span th:text="${#authentication.name}">Usuário</span></strong></p>
-            <p>Endereço de e-mail associado: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
-            <p>Imagem do perfil: <img th:src="${#authentication.principal.image}" alt="User Image" class="user-profile-image" /></p>
-            <p>
-                Você tem os seguintes papéis de usuário:
-                <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span>
-            </p>
-            <p>
-                Status de autenticação em 2FA: <span th:text="${#authentication.principal.isUsing2FA ? 'Ativado' : 'Desativado'}">Desativado</span>
-            </p>
-            <p>Para mais segurança, recomendamos ativar a autenticação de dois fatores (2FA) na sua conta.</p>
-            
-            <!-- Botão "Usuários" visível apenas para ADMIN -->
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/user/list}" class="btn btn-info">Usuários</a>
-            </div>
+            <div class="container">
+                <h3>Hello, <span th:text="${#authentication.name}">Usuário</span>!</h3>
+                <p>Welcome Back! You're logged as: <strong><span th:text="${#authentication.name}">Usuário</span></strong></p>
+                <p>Associated e-mail: <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+                <p>Profile Picture: <img th:src="${#authentication.principal.image}" alt="User Image" class="user-profile-image" /></p>
+                <p>
+                    You have the following role(s) authority(ies):
+                    <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span>
+                </p>
+                <p>
+                    Status on 2FA authentication: <span th:text="${#authentication.principal.isUsing2FA ? 'Ativado' : 'Desativado'}">Desativado</span>
+                </p>
+                <p>For more security, we recommend turning on the 2FA method for your account.</p>
 
-            <form th:action="@{/logout}" method="post">
-                <button type="submit">Sair</button>
-            </form>
+                <!-- Botão "Usuários" visível apenas para ADMIN -->
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/user/list}" class="btn btn-info">Usuários</a>
+                </div>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-danger">Sair</button>
+                </form>
+            </div>
         </div>
 
         <!-- Not Authenticated User Section -->
         <div sec:authorize="!isAuthenticated()">
-            <h3>Você não está autenticado. Faça login para continuar.</h3>
-            <p>Acesse sua conta ou crie uma nova para aproveitar todos os recursos do TotalMedia!</p>
-            <button th:href="@{/login}" onclick="location.href='@{/login}'">Fazer Login</button>
+            <div class="container">
+                <h3>You are not authenticated. Sign in to continue using more of the platform.</h3>
+                <p>Log in to your account or create a new one to take advantage of all the features of TotalMedia!</p>
+                <a th:href="@{/login}" class="btn btn-primary">Login</a>
+            </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
+    <footer class="text-white text-center py-3">
+        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('modeToggle');
+            
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                modeToggleBtn.innerHTML = '&#9789;'; // Sol para o modo claro
+            } else {
+                modeToggleBtn.innerHTML = '&#9733;'; // Lua para o modo escuro
+            }
+        }
+    </script>
 </body>
 </html>
