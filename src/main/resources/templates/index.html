@@ -109,6 +109,7 @@
     </footer>
 
     <script>
+        // Função de alternância do modo escuro/claro
         function toggleMode() {
             const body = document.body;
             const modeToggleBtn = document.getElementById('modeToggle');
@@ -120,6 +121,14 @@
                 modeToggleBtn.innerHTML = '&#9733;'; // Lua para o modo escuro
             }
         }
+
+        // Verificação de role do usuário e redirecionamento para a página admin.html
+        window.onload = function() {
+            const userRoles = /*[[${#authentication.authorities}]]*/ [];  // Supondo que o Thymeleaf possa passar as roles
+            if (userRoles.includes('ROLE_ADMIN')) {
+                window.location.href = '/admin/menu';  // Redireciona para a página admin
+            }
+        };
     </script>
 </body>
 </html>

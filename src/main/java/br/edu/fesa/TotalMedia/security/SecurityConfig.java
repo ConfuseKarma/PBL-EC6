@@ -35,14 +35,14 @@ public class SecurityConfig {
             
             (requests) ->
                 requests
-                    .requestMatchers("/","/index", "/home", "/layout", "/users/create", "/css/**", "/images/**")
+                    .requestMatchers("/","/index", "/home", "/layout", "/user/create", "/css/**", "/images/**")
                     .permitAll() // Todos os usuários podem acessar
                     .requestMatchers("/admin/**")
                     .hasRole("ADMIN") // Somente usuários com a role "ADMIN" podem acessar /admin/**
                     .requestMatchers("/critic/**")
                     .hasAnyRole(
                         "ADMIN",
-                        "CRITIC") // Somente usuários com "ADMIN" ou "LIBRARIAN" podem acessar
+                        "CRITIC") // Somente usuários com "ADMIN" ou "CRITIC" podem acessar
                                      // /critic/**
                     .anyRequest()
                     .authenticated())

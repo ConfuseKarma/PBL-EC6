@@ -2,55 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Login - TotalMedia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
 </head>
-<body>
-    <!-- Header with navigation and user info -->
-    <header>
-        <div class="navbar">
-            <a th:href="@{/}" class="logo">TotalMedia</a>
-            <nav class="nav-links">
-                <a th:href="@{/movies}">Movies</a>
-                <a th:href="@{/series}">Series</a>
-                <a th:href="@{/trending}">Trending</a>
-            </nav>
-            <div class="search-bar">
-                <input type="text" placeholder="Search..." />
+<body class="dark-mode">
+    <!-- Header -->
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/movies}">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/series}">Series</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/trending}">Trending</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    </form>
+                    <div class="d-flex ms-2">
+                        <!-- Botões Sign In e Sign Up visíveis quando não autenticado -->
+                        <div class="d-flex" sec:authorize="!isAuthenticated()">
+                            <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                            <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
+                        </div>
+
+                        <!-- Dropdown do usuário autenticado -->
+                        <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                <span th:text="${#authentication.name}">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Botão de alternância do modo -->
+                    <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
+                </div>
             </div>
-            <!-- Authentication buttons (visible when not authenticated) -->
-            <div class="auth-buttons" sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}">Sign In</a>
-                <a th:href="@{/user/create}">Sign Up</a>
-            </div>
-            <!-- User info (visible when authenticated) -->
-            <div class="user-info" sec:authorize="isAuthenticated()">
-                <span th:text="${#authentication.name}">User</span>
-                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image"/>
-                <a th:href="@{/logout}">Logout</a>
-            </div>
-        </div>
-    </header>
+        </nav>
+    </div>
 
     <!-- Login Page Content -->
     <main>
-        <h1>Login</h1>
-        <form th:action="@{/login}" method="post">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="username" required />
-            <br/>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required />
-            <br/>
-            <button type="submit">Login</button>
-        </form>
-        <div class="auth-buttons">
-            <p>Don't have an account? <a th:href="@{/user/create}">Sign Up</a></p>
+        <div class="container-fluid">
+            <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+                <div class="col-md-6 col-lg-4">
+                    <h1 class="text-center mb-4">Login</h1>
+                    <form th:action="@{/login}" method="post" class="p-4 border rounded shadow">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="text" id="email" name="username" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" id="password" name="password" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div class="auth-buttons mt-3 text-center">
+                        <p class="mt-2">Don't have an account? <a th:href="@{/user/create}">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer>
+    <footer class="text-white text-center py-3">
         <p>&copy; 2024 TotalMedia. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Função de alternância do modo escuro/claro
+        function toggleMode() {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('modeToggle');
+            
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                modeToggleBtn.innerHTML = '&#9789;'; // Sol para o modo claro
+            } else {
+                modeToggleBtn.innerHTML = '&#9733;'; // Lua para o modo escuro
+            }
+        }
+    </script>
 </body>
 </html>

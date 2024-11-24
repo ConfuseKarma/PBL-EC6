@@ -1,43 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <head>
         <meta charset="UTF-8">
-        <title>Lista de Usuários</title>
+        <title>Lista de Usuários | TotalMedia</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/css/styles.css}" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
     </head>
-    <body>
-        <!-- Header with navigation and user info -->
-        <header>
-            <div class="navbar">
-                <a href="/" class="logo">TotalMedia</a>
-                <nav class="nav-links">
-                    <a href="/movies">Movies</a>
-                    <a href="/series">Series</a>
-                    <a href="/trending">Trending</a>
-                </nav>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search..." />
+    <body class="dark-mode">
+        <!-- Header -->
+        <header th:fragment="header">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/movies}">Movies</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/series}">Series</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/trending}">Trending</a></li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                        </form>
+                        <div class="d-flex ms-2">
+                            <!-- Botões Sign In e Sign Up -->
+                            <div sec:authorize="!isAuthenticated()">
+                                <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                                <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
+                            </div>
+                            <!-- Dropdown para usuários autenticados -->
+                            <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                    <span th:text="${#authentication.name}">User</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                    <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="auth-buttons">
-                    <a href="/login">Sign In</a>
-                    <a href="/user/create">Sign Up</a>
-                </div>
-                <div class="user-info" sec:authorize="isAuthenticated()">
-                    <!-- Exibe o nome do usuário logado (seja admin ou outro) -->
-                    <span th:text="${#authentication.name}">Username</span>
-                    <!-- Exibe a imagem do usuário logado -->
-                    <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="user-image" />
-                    <a href="/logout">Logout</a>
-                </div>
-            </div>
+            </nav>
         </header>
 
-        <div class="container">
+        <!-- Main Content -->
+        <div class="container mt-5">
             <h1>Lista de Usuários</h1>
             <div class="d-flex justify-content-between mb-3">
                 <a href="/user/create" class="btn btn-primary">Inserir</a>
-                <a href="#" th:href="@{/admin/menu}" class="btn btn-info">Main Menu</a>
+                <a th:href="@{/admin/menu}" class="btn btn-info">Main Menu</a>
             </div>
             <table class="table table-bordered">
                 <thead class="thead-light">
@@ -45,7 +63,7 @@
                         <th>ID</th>
                         <th>Nome</th>
                         <th>E-mail</th>
-                        <th>Gender</th>
+                        <th>Gênero</th>
                         <th>Role</th>
                         <th>Bio</th>
                         <th>2FA</th>
@@ -65,23 +83,28 @@
                         <td th:text="${user.isUsing2FA}"></td>
                         <td th:text="${user.active}"></td>
                         <td th:text="${user.password}"></td>
-                        <td>
-                            <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-warning btn-sm">Editar</a>
-                        </td>
-                        <td>
-                            <a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm">Remover</a>
-                        </td>
+                        <td><a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-warning btn-sm">Editar</a></td>
+                        <td><a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm">Remover</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <!-- Footer -->
-        <footer>
-            <p>&copy; 2024 TotalMedia. Todos os direitos reservados.</p>
+        <footer class="text-white text-center py-3 mt-5">
+            <p>&copy; 2024 TotalMedia. All rights reserved.</p>
         </footer>
 
-        <!-- Bootstrap JS and dependencies -->
+
+        <!-- Scripts -->
+        <script>
+            function toggleMode() {
+                const body = document.body;
+                const modeToggleBtn = document.getElementById('modeToggle');
+                body.classList.toggle('dark-mode');
+                modeToggleBtn.innerHTML = body.classList.contains('dark-mode') ? '&#9789;' : '&#9733;';
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

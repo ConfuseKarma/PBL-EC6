@@ -108,3 +108,41 @@ footer a {
 footer a:hover {
     text-decoration: underline; /* Sublinha ao passar o mouse */
 }
+
+/* Estilo da Tabela */
+.table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Para o modo escuro - tabela */
+.dark-mode .table {
+    background-color: #1e1e1e; /* Cor de fundo escura para a tabela */
+}
+
+.dark-mode .table th, .dark-mode .table td {
+    color: #fff; /* Cor do texto na tabela para o modo escuro */
+    font-family: 'Spectral', serif; /* Garantir que a fonte seja igual ao corpo da página */
+}
+
+/* Para o modo escuro, garantir que os títulos das colunas fiquem escuros */
+.dark-mode .table th {
+    background-color: #333; /* Fundo escuro para os cabeçalhos */
+    color: #bbb; /* Cor escura para os textos dos cabeçalhos */
+}
+
+/* Para o modo claro - tabela */
+.table th, .table td {
+    color: #000; /* Cor do texto na tabela para o modo claro */
+    font-family: 'Spectral', serif; /* Garantir que a fonte seja igual ao corpo da página */
+}
+
+/* Centralizando a Tabela */
+.table, .table th, .table td {
+    text-align: center; /* Centraliza o conteúdo da tabela */
+}
+
+/* Garantindo que as células da tabela fiquem centralizadas verticalmente */
+.table td, .table th {
+    vertical-align: middle;
+}
