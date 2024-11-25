@@ -4,8 +4,8 @@
  */
 package br.edu.fesa.TotalMedia.controller;
 
-import br.edu.fesa.TotalMedia.exception.ResourceNotFoundException;
 import br.edu.fesa.TotalMedia.model.Movie;
+import br.edu.fesa.TotalMedia.service.DirectorService;
 import br.edu.fesa.TotalMedia.service.MovieService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/movie")
 public class MovieController {
+    
     @Autowired
     private MovieService movieService;
+    @Autowired
+    private DirectorService directorService;
 
     // Lista todos os filmes e exibe na página de listagem
     @GetMapping("/list")
@@ -35,6 +37,7 @@ public class MovieController {
     @GetMapping("/create")
     public String createMovieForm(Model model) {
         model.addAttribute("movie", new Movie());
+        model.addAttribute("directors", directorService.findAllDirectors());
         return "movie/create";
     }
     

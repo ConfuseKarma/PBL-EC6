@@ -62,9 +62,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Título</th>
-                    <th>Gênero</th>
                     <th>Duração</th>
-                    <th>Diretor</th>
                     <th>Classificação</th>
                     <th>Ano de Lançamento</th>
                     <th colspan="2">Ações</th>
@@ -74,9 +72,7 @@
                 <tr th:each="movie : ${movies}">
                     <td th:text="${movie.id}"></td>
                     <td th:text="${movie.title}"></td>
-                    <td th:text="${movie.genre}"></td>
-                    <td th:text="${movie.duration} + ' min'"></td>
-                    <td th:text="${movie.director}"></td>
+                    <td th:text="${movie.durationMinutes} + ' min'"></td>
                     <td th:text="${movie.rating}"></td>
                     <td th:text="${movie.releaseYear}"></td>
                     <td><a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-warning btn-sm">Editar</a></td>

@@ -33,10 +33,6 @@ public class Movie {
     @Column(name = "SUBTITLE", nullable = true, length = 255)
     private String subtitle;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ID_DIRECTOR", referencedColumnName = "ID_DIRECTOR")
-    private Director director;
-
     @Column(name = "IMAGE", nullable = true)
     private String image;
 
@@ -66,18 +62,15 @@ public class Movie {
             String title,
             String subtitle,
             LocalDateTime releaseDate,
-            Director director,
             String image,
             String rating,
             String synopsis,
             Integer releaseYear,
             String productionCompany,
             int durationMinutes,
-            String language,
-            Genre genre) {
+            String language) {
         this.title = title;
         this.subtitle = subtitle;
-        this.director = director;
         this.image = image;
         this.rating = rating;
         this.synopsis = synopsis;
@@ -110,14 +103,6 @@ public class Movie {
 
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
-    }
-
-    public Director getDirector() {
-        return director;
-    }
-
-    public void setDirector(Director director) {
-        this.director = director;
     }
 
     public String getImage() {
