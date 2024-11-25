@@ -1,19 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>Admin Menu</title>
+    <title>TotalMedia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
 </head>
-<body>
-    <header>
-        <h1>Admin Menu</h1>
-    </header>
-    <main>
-        <h2>Bem-vindo, Administrador!</h2>
-        <ul>
-            <li><a th:href="@{/user/list}">Gerenciar Usuários</a></li>
-            <li><a th:href="@{/movies}">Gerenciar Filmes</a></li>
-            <li><a th:href="@{/series}">Gerenciar Séries</a></li>
-        </ul>
-    </main>
+<body class="dark-mode">
+    <!-- Header -->
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/filme}">Movies</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/series}">Series</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/trending}">Trending</a></li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    </form>
+                    <div class="d-flex ms-2">
+                        <!-- Buttons for unauthenticated users -->
+                        <div class="d-flex" sec:authorize="!isAuthenticated()">
+                            <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                            <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
+                        </div>
+                        <!-- Dropdown for authenticated users -->
+                        <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                <span th:text="${#authentication.name}">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Mode toggle button -->
+                    <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Content -->
+    <div th:fragment="content">
+        <div class="container mt-4">
+            <h1 class="text-center mb-4">Welcome to TotalMedia!</h1>
+            <h2 class="text-center lead mb-5">Discover the latest movies, series, and trending content</h2>
+            
+            <!-- Authenticated User Section -->
+            <div sec:authorize="isAuthenticated()">
+                <h3>Hello, <span th:text="${#authentication.name}">User</span>!</h3>
+                <p>Welcome Back! You're logged as: <strong><span th:text="${#authentication.name}">User</span></strong></p>
+                <p><strong>Associated Email:</strong> <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+                <p><strong>Profile Picture:</strong></p>
+                <img th:src="${#authentication.principal.image}" alt="User Image" class="user-profile-image" />
+                <p><strong>Roles:</strong> <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span></p>
+                <p><strong>2FA Status:</strong> <span th:text="${#authentication.principal.isUsing2FA ? 'Enabled' : 'Disabled'}">Disabled</span></p>
+                
+                <!-- Critic Section -->
+                <div sec:authorize="hasRole('ROLE_CRITIC')">
+                    <h4>Critic Menu</h4>
+                    <div class="row text-center">
+                        <div class="col">
+                            <img th:src="@{/images/gerenciar_usuarios.png}" alt="Manage Users" class="img-fluid" style="max-width: 150px;">
+                            <p><a class="btn btn-info mt-2" th:href="@{/user/list}">Manage Users</a></p>
+                        </div>
+                        <div class="col">
+                            <img th:src="@{/images/gerenciar_filmes.png}" alt="Manage Movies" class="img-fluid" style="max-width: 150px;">
+                            <p><a class="btn btn-info mt-2" th:href="@{/filme/list}">Manage Movies</a></p>
+                        </div>
+                        <div class="col">
+                            <img th:src="@{/images/gerenciar_series.png}" alt="Manage Series" class="img-fluid" style="max-width: 150px;">
+                            <p><a class="btn btn-info mt-2" th:href="@{/series}">Manage Series</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Not Authenticated Section -->
+            <div sec:authorize="!isAuthenticated()">
+                <h3>You are not authenticated. Sign in to enjoy more features of TotalMedia.</h3>
+                <p>Log in or create an account to fully explore our platform!</p>
+                <a class="btn btn-primary" th:href="@{/login}">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-white text-center py-3">
+        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('modeToggle');
+            body.classList.toggle('dark-mode');
+            modeToggleBtn.innerHTML = body.classList.contains('dark-mode') ? '&#9789;' : '&#9733;';
+        }
+    </script>
 </body>
 </html>
