@@ -75,8 +75,8 @@
                     <td th:text="${movie.durationMinutes} + ' min'"></td>
                     <td th:text="${movie.rating}"></td>
                     <td th:text="${movie.releaseYear}"></td>
-                    <td><a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-warning btn-sm">Editar</a></td>
-                    <td><a th:href="@{/movies/delete/{id}(id=${movie.id})}" class="btn btn-danger btn-sm">Remover</a></td>
+                    <td><a th:href="@{/movie/edit/{id}(id=${movie.id})}" class="btn btn-warning btn-sm">Editar</a></td>
+                    <td><a th:href="@{/movie/delete/{id}(id=${movie.id})}" class="btn btn-danger btn-sm">Remover</a></td>
                 </tr>
             </tbody>
         </table>
