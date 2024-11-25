@@ -146,3 +146,54 @@ footer a:hover {
 .table td, .table th {
     vertical-align: middle;
 }
+
+/* Carrossel ocupando mais espaço */
+.carousel-item {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 10;
+}
+
+.carousel-item img {
+    filter: brightness(50%);
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.carousel-caption h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.carousel-caption h2 {
+    font-size: 1.5rem;
+}
+
+.carousel-caption p {
+    font-size: 1.2rem;
+}
+
+/* Estilo do botão de login */
+    .btn-login {
+    background-color: transparent;  /* Torna o botão transparente */
+    border: 2px solid #007bff;       /* Cor da borda */
+    color: #007bff;                  /* Cor do texto */
+    transition: all 0.3s ease;       /* Suaviza a transição do efeito */
+}
+
+.btn-login:hover {
+    background-color: #007bff;       /* Cor de fundo ao passar o mouse */
+    color: white;                    /* Cor do texto ao passar o mouse */
+    border-color: #0056b3;           /* Cor da borda ao passar o mouse */
+}    
