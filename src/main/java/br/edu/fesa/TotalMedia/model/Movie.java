@@ -33,9 +33,6 @@ public class Movie {
     @Column(name = "SUBTITLE", nullable = true, length = 255)
     private String subtitle;
 
-    @Column(name = "RELEASE_DATE", nullable = false)
-    private LocalDateTime releaseDate;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "ID_DIRECTOR", referencedColumnName = "ID_DIRECTOR")
     private Director director;
@@ -80,7 +77,6 @@ public class Movie {
             Genre genre) {
         this.title = title;
         this.subtitle = subtitle;
-        this.releaseDate = releaseDate;
         this.director = director;
         this.image = image;
         this.rating = rating;
@@ -114,14 +110,6 @@ public class Movie {
 
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
-    }
-
-    public LocalDateTime getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(LocalDateTime releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public Director getDirector() {

@@ -31,5 +31,17 @@ public class MovieController {
         return "movie/list"; // Retorna o arquivo "movies-list.html"
     }
 
+    // Exibe o formulário para criar um novo filme
+    @GetMapping("/create")
+    public String createMovieForm(Model model) {
+        model.addAttribute("movie", new Movie());
+        return "movie/create";
+    }
     
+    // Salva o novo filme enviado pelo formulário
+    @PostMapping("/save")
+    public String saveMovie(@ModelAttribute("movie") Movie movie) {
+        movieService.save(movie);
+        return "redirect:/movie/list"; // Redireciona para a lista de filmes
+    }
 }
