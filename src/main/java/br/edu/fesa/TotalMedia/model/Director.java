@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Entity
@@ -30,21 +30,21 @@ public class Director implements Serializable {
   private String country;
 
   @Column(name = "BIRTH_DATE", nullable = false)
-  private LocalDateTime birthDate;
+  private LocalDate  birthDate;
   
    @Column(name = "IMAGE", nullable = true)
   private String image; // Para armazenar o caminho ou URL da imagem do diretor
 
   public Director() {}
 
-  public Director(String name, String country, LocalDateTime birthDate) {
+  public Director(String name, String country, LocalDate birthDate) {
     this.name = name;
     this.country = country;
     this.birthDate = birthDate;
     this.image = image;
   }
 
-  public Director(int id, String name, String country, LocalDateTime birthDate) {
+  public Director(int id, String name, String country, LocalDate birthDate) {
     this.id = id;
     this.name = name;
     this.country = country;
@@ -76,11 +76,11 @@ public class Director implements Serializable {
     this.country = country;
   }
 
-  public LocalDateTime getBirthDate() {
+  public LocalDate getBirthDate() {
     return birthDate;
   }
 
-  public void setBirthDate(LocalDateTime birthDate) {
+  public void setBirthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
   }
   

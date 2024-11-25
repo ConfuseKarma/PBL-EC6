@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insert New Director | TotalMedia</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
+    </head>
+    <body class="dark-mode">
+        <!-- Header -->
+        <header th:fragment="header">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/movies}">Movies</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/series}">Series</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/trending}">Trending</a></li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                        </form>
+                        <div class="d-flex ms-2">
+                            <!-- Sign In and Sign Up buttons -->
+                            <div sec:authorize="!isAuthenticated()">
+                                <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
+                                <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
+                            </div>
+                            <!-- Dropdown for authenticated users -->
+                            <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
+                                    <span th:text="${#authentication.name}">User</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                    <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container mt-5">
+            <h1>New User</h1>
+            <div class="d-flex justify-content-between mb-3">
+                <a th:href="@{/admin/menu}" class="btn btn-info">Main Menu</a>
+            </div>
+            <form action="#" th:action="@{/director/save}" th:object="${director}" method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country" th:field="*{country}" placeholder="country" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Birth Date</label>
+                    <input type="date" class="form-control" id="birthDate" th:field="*{birthDate}" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="#" th:href="@{/user/list}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-white text-center py-3 mt-5">
+            <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+        </footer>
+
+        <!-- Scripts -->
+        <script>
+            function toggleMode() {
+                const body = document.body;
+                const modeToggleBtn = document.getElementById('modeToggle');
+                body.classList.toggle('dark-mode');
+                modeToggleBtn.innerHTML = body.classList.contains('dark-mode') ? '&#9789;' : '&#9733;';
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</html>
