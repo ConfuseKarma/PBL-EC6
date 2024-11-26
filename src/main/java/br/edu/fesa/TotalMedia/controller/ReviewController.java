@@ -36,7 +36,7 @@ public class ReviewController {
     @GetMapping("/create")
     public String createReviewForm(Model model) {
         model.addAttribute("review", new Review()); // Cria um novo objeto de review para o formulário
-        return "create"; // Retorna o nome do template de criação (create.html)
+        return "reviews/create"; // Retorna o nome do template de criação (create.html) com o caminho correto
     }
 
     // Endpoint para buscar uma avaliação pelo ID
@@ -45,7 +45,7 @@ public class ReviewController {
         Optional<Review> review = reviewService.getReviewById(id);
         if (review.isPresent()) {
             model.addAttribute("review", review.get());
-            return "edit"; // Retorna a página de edição (edit.html)
+            return "reviews/edit"; // Retorna a página de edição (edit.html) com o caminho correto
         }
         return "redirect:/reviews/list"; // Redireciona de volta para a lista caso não encontre
     }
