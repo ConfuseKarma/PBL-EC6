@@ -60,4 +60,8 @@ public class ReviewService {
     public boolean existsById(Integer id) {
         return reviewRepository.existsById(id); // Retorna true se a avaliação existir, false caso contrário
     }
+    
+    public List<Review> findReviewsByMovieId(int movieId) {
+        return reviewRepository.findAllByMovieId(movieId);
+    }
 }

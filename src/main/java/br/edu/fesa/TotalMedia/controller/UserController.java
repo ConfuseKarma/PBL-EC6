@@ -109,4 +109,9 @@ public class UserController {
         }
         return "redirect:/user/list";  // Redireciona para a lista de usuários, caso falhe
     }
+    
+    @GetMapping("/menu")
+    public String userPage() {
+        return "userArea"; 
+    }
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalhes do Filme</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 th:text="${movie.title}">Título do Filme</h1>
+    <p th:text="${movie.synopsis}">Descrição do Filme</p>
+    
+    <a href="#" th:href="@{/movie/list}" class="btn btn-secondary">Voltar</a>
+</div>
+</body>
+</html>

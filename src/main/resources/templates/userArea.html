@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Área do Usuário</title>
-  <!-- Importando o Bootstrap para estilização -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>TotalMedia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap">
 </head>
-<body>
-     <div th:fragment="header">
+<body class="dark-mode">
+    <!-- Header -->
+    <div th:fragment="header">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" th:href="@{/}">TotalMedia</a>
@@ -17,28 +17,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/movies}">Movies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/series}">Series</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/trending}">Trending</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/templates/userArea">User </a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/filme}">Movies</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/series}">Series</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/trending}">Trending</a></li>
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
                     </form>
                     <div class="d-flex ms-2">
+                        <!-- Buttons for unauthenticated users -->
                         <div class="d-flex" sec:authorize="!isAuthenticated()">
                             <a class="btn btn-outline-light me-2" th:href="@{/login}">Sign In</a>
                             <a class="btn btn-primary ms-2" th:href="@{/user/create}">Sign Up</a>
                         </div>
-
+                        <!-- Dropdown for authenticated users -->
                         <div class="dropdown ms-2" sec:authorize="isAuthenticated()">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img th:src="${#authentication.principal.image != null && #authentication.principal.image != '' ? #authentication.principal.image : '/path/to/default/image.jpg'}" alt="User Image" class="rounded-circle" width="30" height="30">
@@ -51,74 +43,66 @@
                             </ul>
                         </div>
                     </div>
+                    <!-- Mode toggle button -->
                     <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
                 </div>
             </div>
         </nav>
     </div>
-    
-  <div class="container mt-5">
-    <h2>Área do Usuário</h2>
-    <form>
-      <!-- Nome -->
-      <div class="form-group">
-        <label for="name">Nome</label>
-        <input type="text" class="form-control" id="name" value="João Silva" disabled>
-      </div>
 
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" value="joao.silva@email.com" disabled>
-      </div>
+    <!-- Content -->
+    <div th:fragment="content">
+        <div class="container mt-4">
+            <h1 class="text-center mb-4">Welcome to TotalMedia!</h1>
+            <h2 class="text-center lead mb-5">Discover the latest movies, series, and trending content</h2>
+            
+            <!-- Authenticated User Section -->
+            <div sec:authorize="isAuthenticated()">
+                <h3>Hello, <span th:text="${#authentication.name}">User</span>!</h3>
+                <p>Welcome Back! You're logged as: <strong><span th:text="${#authentication.name}">User</span></strong></p>
+                <p><strong>Associated Email:</strong> <span th:text="${#authentication.principal.email}">email@example.com</span></p>
+                <p><strong>Profile Picture:</strong></p>
+                <img th:src="${#authentication.principal.image}" alt="User Image" class="user-profile-image" />
+                <p><strong>Roles:</strong> <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}">ROLE_USER</span></p>
+                <p><strong>2FA Status:</strong> <span th:text="${#authentication.principal.isUsing2FA ? 'Enabled' : 'Disabled'}">Disabled</span></p>
+                
+                <!-- User Section -->
+                <div sec:authorize="hasRole('ROLE_CLIENT')">
+                    <h4>User Menu</h4>
+                    <div class="row text-center">
+                        <div class="col">
+                            <img th:src="@{/images/gerenciar_filmes.png}" alt="Manage Movies" class="img-fluid" style="max-width: 150px;">
+                            <p><a class="btn btn-info mt-2" th:href="@{/filme/list}">My Movies</a></p>
+                        </div>
+                        <div class="col">
+                            <img th:src="@{/images/gerenciar_series.png}" alt="Manage Series" class="img-fluid" style="max-width: 150px;">
+                            <p><a class="btn btn-info mt-2" th:href="@{/series}">My TV Shows</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Data de Registro -->
-      <div class="form-group">
-        <label for="registrationDate">Data de Registro</label>
-        <input type="text" class="form-control" id="registrationDate" value="2023-01-15 14:30:00" disabled>
-      </div>
+            <!-- Not Authenticated Section -->
+            <div sec:authorize="!isAuthenticated()">
+                <h3>You are not authenticated. Sign in to enjoy more features of TotalMedia.</h3>
+                <p>Log in or create an account to fully explore our platform!</p>
+                <a class="btn btn-primary" th:href="@{/login}">Login</a>
+            </div>
+        </div>
+    </div>
 
-      <!-- Senha -->
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" class="form-control" id="password" value="********" disabled>
-      </div>
+    <!-- Footer -->
+    <footer class="text-white text-center py-3">
+        <p>&copy; 2024 TotalMedia. All rights reserved.</p>
+    </footer>
 
-      <!-- Imagem -->
-      <div class="form-group">
-        <label for="image">Imagem de Perfil</label>
-        <input type="text" class="form-control" id="image" value="caminho/para/imagem.jpg" disabled>
-      </div>
-
-      <!-- 2FA -->
-      <div class="form-group">
-        <label for="isUsing2FA">Usando 2FA</label>
-        <input type="checkbox" id="isUsing2FA" checked disabled>
-      </div>
-
-      <!-- Bio -->
-      <div class="form-group">
-        <label for="bio">Biografia</label>
-        <textarea class="form-control" id="bio" rows="3" disabled>Sou um usuário ativo e gosto de compartilhar opiniões!</textarea>
-      </div>
-
-      <!-- Status Ativo -->
-      <div class="form-group">
-        <label for="active">Status</label>
-        <input type="checkbox" id="active" checked disabled>
-      </div>
-
-      <!-- Botões de Navegação -->
-      <div class="form-group">
-        <button type="button" class="btn btn-primary" id="reviewsBtn">Reviews</button>
-        <button type="button" class="btn btn-secondary" id="dashboardBtn">Dashboard</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Importando o script do Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const modeToggleBtn = document.getElementById('modeToggle');
+            body.classList.toggle('dark-mode');
+            modeToggleBtn.innerHTML = body.classList.contains('dark-mode') ? '&#9789;' : '&#9733;';
+        }
+    </script>
 </body>
 </html>

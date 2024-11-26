@@ -12,4 +12,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     // Custom query method to find reviews by their type (e.g., "client" or "critic")
     List<Review> findByReviewType(String reviewType);
+    
+    List<Review> findAllByMovieId(int movieId);
 }

@@ -6,8 +6,10 @@ package br.edu.fesa.TotalMedia.controller;
 
 import br.edu.fesa.TotalMedia.exception.ResourceNotFoundException;
 import br.edu.fesa.TotalMedia.model.Movie;
+import br.edu.fesa.TotalMedia.model.Review;
 import br.edu.fesa.TotalMedia.service.DirectorService;
 import br.edu.fesa.TotalMedia.service.MovieService;
+import br.edu.fesa.TotalMedia.service.ReviewService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private DirectorService directorService;
+    @Autowired
+    private ReviewService reviewService;
 
     // Lista todos os filmes e exibe na página de listagem
     @GetMapping("/list")
@@ -87,5 +91,14 @@ public class MovieController {
     public String confirmDelete(@PathVariable Integer id) {
         movieService.deleteById(id);
         return "redirect:/movie/list"; // Redireciona para a lista de filmes
+    }
+    
+    @GetMapping("/{id}")
+    public String showMovieDetails(@PathVariable int id, Model model) {
+        Movie movie = movieService.findById(id)
+                                  .orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com o ID: " + id));
+    
+        model.addAttribute("movie", movie);
+        return "movies/details"; // Nome do template Thymeleaf
     }
 }

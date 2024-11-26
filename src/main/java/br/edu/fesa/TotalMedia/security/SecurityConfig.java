@@ -125,7 +125,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 redirectUrl = "/critic/menu";
                 break;
             default:
-                redirectUrl = "/home";
+                redirectUrl = "/user/menu";
         }
 
         response.sendRedirect(redirectUrl);
