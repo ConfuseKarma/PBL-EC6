@@ -29,6 +29,9 @@
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/trending}">Trending</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/templates/userArea">User </a>
+                        </li>
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
@@ -46,15 +49,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                 <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
-                                <li><a class="dropdown-item" th:href="@{/my-reviews}">My Reviews</a></li> <!-- Adicionando a opção My Reviews -->
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
-                                
                             </ul>
                         </div>
-                        
-                        
-                        
                     </div>
                     <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
                 </div>
@@ -211,91 +209,104 @@
         </div>
         
         <div style="padding-top: 50px;">
-            <h2 class="text-center text-white">Maybe you'll enjoy:</h2>
+            <h2 class="text-center">Maybe you'll enjoy:</h2>
         </div>
         
-         <!-- News Section -->
+        <!-- News Section -->
         <div class="container mt-5">
-            <h2 class="text-center text-white">News</h2>
-            <div class="row">
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/news/news1.jpg" class="card-img-top" alt="News 1">
-                        <div class="card-body">
-                            <h5 class="card-title">News Title 1</h5>
-                            <p class="card-text">Short description of the news article.</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
+            <h2 class="text-center">News</h2>
+            <div class="news-carousel">
+                <button class="carousel-button left" onclick="scrollCarousel(-1)">&#9664;</button>
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <!-- Each news block -->
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/article/weekend-box-office-wicked-scores-third-biggest-opening-of-the-year/" target="_blank">
+                                <img src="/images/news1.png" alt="News 1" />
+                                <p class="news-title">Box Office: Wicked's Magical Debut</p>
+                                <p class="news-subtitle">Gladiator II also scores a solid opening</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/article/the-gladiator-ii-cast-on-working-with-ridley-scott/" target="_blank">
+                                <img src="/images/news2.png" alt="News 2" />
+                                <p class="news-title">The Gladiator II Cast on Working with Ridley Scott</p>
+                                <p class="news-subtitle">See Gladiator II in theaters this Friday, November 22</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/article/the-most-anticipated-movies-of-2025/" target="_blank">
+                                <img src="/images/news3.png" alt="News 3" />
+                                <p class="news-title">Most Anticipated Movies of 2025</p>
+                                <p class="news-subtitle">A teaser for Lilo & Stitch has dropped. Get a glimpse of Stitch!</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/guide/best-thanksgiving-movies/" target="_blank">
+                                <img src="/images/news4.png" alt="News 4" />
+                                <p class="news-title">Best Thanksgiving Movies</p>
+                                <p class="news-subtitle">Your holiday movie feast is here</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/article/gladiator-ii-first-reviews-the-grand-spectacle-of-action-and-intrigue-youre-hoping-for/" target="_blank">
+                                <img src="/images/news5.png" alt="News 5" />
+                                <p class="news-title">Gladiator II First Reviews</p>
+                                <p class="news-subtitle">The grand spectacle you're hoping for</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/guide/cynthia-erivo-movies-ranked/" target="_blank">
+                                <img src="/images/news6.png" alt="News 6" />
+                                <p class="news-title">Cynthia Erivo Movies Ranked</p>
+                                <p class="news-subtitle">After you see Wicked, check out these 10 movies and shows</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://editorial.rottentomatoes.com/guide/pedro-pascal/" target="_blank">
+                                <img src="/images/news7.png" alt="News 7" />
+                                <p class="news-title">Pedro Pascal Movies and Series Ranked</p>
+                                <p class="news-subtitle">See where Gladiator II places</p>
+                            </a>
+                        </div>
+                        <div class="news-item">
+                            <a href="https://www.rottentomatoes.com/m/wicked_2024/videos/dPY03bSwi17i" target="_blank">
+                                <img src="/images/news8.png" alt="News 8" />
+                                <p class="news-title">The Wicked Cast on Landing the Dream Role and Belting Out Defying Gravity</p>
+                                <p class="news-subtitle">Wicked flies into theaters his Friday, November 22</p>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/news/news2.jpg" class="card-img-top" alt="News 2">
-                        <div class="card-body">
-                            <h5 class="card-title">News Title 2</h5>
-                            <p class="card-text">Short description of the news article.</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/news/news3.jpg" class="card-img-top" alt="News 3">
-                        <div class="card-body">
-                            <h5 class="card-title">News Title 3</h5>
-                            <p class="card-text">Short description of the news article.</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/news/news4.jpg" class="card-img-top" alt="News 4">
-                        <div class="card-body">
-                            <h5 class="card-title">News Title 4</h5>
-                            <p class="card-text">Short description of the news article.</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
+                <button class="carousel-button right" onclick="scrollCarousel(1)">&#9654;</button>
             </div>
-        </div>
-        
-        <!-- Trending Section -->
-        <div class="container mt-5">
-            <h2 class="text-center text-white">Trending</h2>
-            <div class="row">
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending1.jpg" class="card-img-top" alt="Trending 1">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending2.jpg" class="card-img-top" alt="Trending 2">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending3.jpg" class="card-img-top" alt="Trending 3">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending4.jpg" class="card-img-top" alt="Trending 4">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending5.jpg" class="card-img-top" alt="Trending 5">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6 mb-4">
-                    <div class="card bg-dark text-white">
-                        <img src="/images/trending/trending6.jpg" class="card-img-top" alt="Trending 6">
-                    </div>
-                </div>
-            </div>
+            
+            <script>
+                let currentIndex = 0;
+
+                function scrollCarousel(direction) {
+                    const track = document.querySelector('.carousel-track');
+                    const items = document.querySelectorAll('.news-item');
+                    const visibleItems = 4; // Number of items visible at a time
+                    const totalItems = items.length;
+
+                    // Calculate the new index circularly
+                    currentIndex += direction;
+
+                    if (currentIndex < 0) {
+                        currentIndex = totalItems - visibleItems; // Go to the last set of items
+                    } else if (currentIndex > totalItems - visibleItems) {
+                        currentIndex = 0; // Wrap back to the first set of items
+                    }
+
+                    // Calculate the transform distance
+                    const itemWidth = items[0].getBoundingClientRect().width;
+                    const scrollDistance = currentIndex * itemWidth;
+
+                    // Move the carousel
+                    track.style.transform = `translateX(-${scrollDistance}px)`;
+                }
+            </script>
         </div>
         
     </div>
