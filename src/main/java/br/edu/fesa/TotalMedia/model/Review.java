@@ -32,29 +32,29 @@ public class Review {
     private User user;  // Relacionamento com o usuário (quem fez a review)
 
     @ManyToOne
-    @JoinColumn(name = "MEDIA_ID", nullable = false)
+    @JoinColumn(name = "MOVIE_ID", nullable = false) // Atualizando o nome da coluna para 'MOVIE_ID'
     @NotNull
-    private Media media;  // Relacionamento com a mídia (filme/série avaliada)
+    private Movie movie;  // Relacionamento com o filme avaliado
 
     // Construtor sem o 'id', que será gerado automaticamente pelo banco de dados
-    public Review(String text, String reviewType, User user, Media media) {
+    public Review(String text, String reviewType, User user, Movie movie) {
         this.text = text;
         this.reviewType = reviewType;
         this.user = user;
-        this.media = media;
+        this.movie = movie;
     }
     
     public Review() {
-    // Construtor sem argumentos
-}
+        // Construtor sem argumentos
+    }
 
     // Construtor com todos os campos, incluindo o id (gerado automaticamente)
-    public Review(Integer id, String text, String reviewType, User user, Media media) {
+    public Review(Integer id, String text, String reviewType, User user, Movie movie) {
         this.id = id;
         this.text = text;
         this.reviewType = reviewType;
         this.user = user;
-        this.media = media;
+        this.movie = movie;
     }
 
     // Getters e Setters
@@ -79,6 +79,10 @@ public class Review {
     }
 
     public void setReviewType(String reviewType) {
+        // Validação simples para garantir que o reviewType seja válido
+        if (!reviewType.equals("client") && !reviewType.equals("critic")) {
+            throw new IllegalArgumentException("Invalid review type");
+        }
         this.reviewType = reviewType;
     }
 
@@ -90,12 +94,12 @@ public class Review {
         this.user = user;
     }
 
-    public Media getMedia() {
-        return media;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMedia(Media media) {
-        this.media = media;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     @Override
@@ -105,7 +109,7 @@ public class Review {
                 ", text='" + text + '\'' +
                 ", reviewType='" + reviewType + '\'' +
                 ", user=" + (user != null ? user.getName() : "Unknown") + // Se o usuário for nulo, exibe "Unknown"
-                ", media=" + (media != null ? media.getTitle() : "Unknown") + // Se a mídia for nula, exibe "Unknown"
+                ", movie=" + (movie != null ? movie.getTitle() : "Unknown") + // Se o filme for nulo, exibe "Unknown"
                 '}';
     }
 }

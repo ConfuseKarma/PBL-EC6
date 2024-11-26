@@ -1,8 +1,14 @@
 package br.edu.fesa.TotalMedia.controller;
 
+import br.edu.fesa.TotalMedia.model.Movie;
 import br.edu.fesa.TotalMedia.model.Review;
+import br.edu.fesa.TotalMedia.model.User;
+import br.edu.fesa.TotalMedia.service.MovieService;
 import br.edu.fesa.TotalMedia.service.ReviewService;
+import br.edu.fesa.TotalMedia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,55 +23,93 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    // Endpoint para exibir a lista de avaliações
+    @Autowired
+    private MovieService movieService;
+
+    @Autowired
+    private UserService userService;
+
+    // Listar todas as avaliações (READ)
     @GetMapping("/list")
-    public String getAllReviews(Model model) {
-        List<Review> reviews = reviewService.getAllReviews();
-        model.addAttribute("reviews", reviews); // Adiciona a lista de reviews ao modelo
-        return "/reviews/list"; // Retorna o nome do template 'list.html'
+    public String listReviews(Model model) {
+        List<Review> reviews = reviewService.getAllReviews();  // Recupera todas as avaliações
+        model.addAttribute("reviews", reviews);  // Adiciona as avaliações ao modelo
+        return "reviews/list";  // Página que lista as avaliações
     }
 
-    // Endpoint para salvar uma nova avaliação
-    @PostMapping
-    public String saveReview(@ModelAttribute Review review) {
-        reviewService.saveReview(review);
-        return "redirect:/reviews/list"; // Redireciona de volta para a lista de avaliações após salvar
-    }
-
-    // Endpoint para exibir a página de criação de uma avaliação
-    @GetMapping("/create")
-    public String createReviewForm(Model model) {
-        model.addAttribute("review", new Review()); // Cria um novo objeto de review para o formulário
-        return "reviews/create"; // Retorna o nome do template de criação (create.html) com o caminho correto
-    }
-
-    // Endpoint para buscar uma avaliação pelo ID
+    // Exibir uma avaliação específica por ID (READ)
     @GetMapping("/{id}")
-    public String getReviewById(@PathVariable Integer id, Model model) {
-        Optional<Review> review = reviewService.getReviewById(id);
-        if (review.isPresent()) {
-            model.addAttribute("review", review.get());
-            return "reviews/edit"; // Retorna a página de edição (edit.html) com o caminho correto
+    public String showReview(@PathVariable Integer id, Model model) {
+        Optional<Review> reviewOpt = reviewService.getReviewById(id);  // Recupera a avaliação pelo ID
+        if (reviewOpt.isPresent()) {
+            model.addAttribute("review", reviewOpt.get());  // Se encontrado, adiciona ao modelo
+            return "reviews/detail";  // Página de detalhes da avaliação
         }
-        return "redirect:/reviews/list"; // Redireciona de volta para a lista caso não encontre
+        return "redirect:/reviews/list";  // Se não encontrado, redireciona para a lista
     }
 
-    // Endpoint para atualizar uma avaliação
-    @PutMapping("/{id}")
+    // Criar uma nova avaliação (CREATE)
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        List<Movie> movieList = movieService.findAll();  // Obtém todos os filmes
+        model.addAttribute("review", new Review());  // Cria um novo objeto Review para o formulário
+        model.addAttribute("movieList", movieList);  // Adiciona a lista de filmes ao modelo
+        return "reviews/create";  // Página de formulário para criação
+    }
+
+    @PostMapping("/save")
+    public String createReview(@ModelAttribute Review review, Model model) {
+        // Obtendo o usuário autenticado através do SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();  // O nome do usuário é o email
+
+        // Recuperando o usuário a partir do seu email
+        User user = userService.getUserByEmail(email).orElse(null);
+
+        if (user == null) {
+            model.addAttribute("error", "Usuário não autenticado");
+            return "reviews/create";  // Redireciona para a página de criação de avaliação com erro
+        }
+
+        review.setUser(user);  // Associa o usuário à avaliação
+        reviewService.saveReview(review);  // Salva a avaliação no banco de dados
+        return "redirect:/reviews/list";  // Redireciona para a lista de avaliações
+    }
+
+    // Editar uma avaliação existente (UPDATE)
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        Optional<Review> reviewOpt = reviewService.getReviewById(id);  // Recupera a avaliação pelo ID
+        if (reviewOpt.isPresent()) {
+            model.addAttribute("review", reviewOpt.get());  // Se encontrado, adiciona ao modelo
+            List<Movie> movieList = movieService.findAll();  // Obtém todos os filmes para selecionar
+            model.addAttribute("movieList", movieList);  // Adiciona a lista de filmes ao modelo
+            return "reviews/edit";  // Página de formulário para editar a avaliação
+        }
+        return "redirect:/reviews/list";  // Se não encontrado, redireciona para a lista
+    }
+
+    @PostMapping("/update/{id}")
     public String updateReview(@PathVariable Integer id, @ModelAttribute Review review) {
-        if (reviewService.existsById(id)) {
-            review.setId(id); // Garante que o ID da avaliação está correto
-            reviewService.updateReview(review);
-        }
-        return "redirect:/reviews/list"; // Redireciona para a lista de avaliações após a atualização
+        review.setId(id);  // Garante que o ID da avaliação está correto
+        reviewService.updateReview(review);  // Atualiza a avaliação no banco de dados
+        return "redirect:/reviews/list";  // Redireciona para a lista de avaliações
     }
 
-    // Endpoint para deletar uma avaliação
-    @DeleteMapping("/{id}")
-    public String deleteReview(@PathVariable Integer id) {
-        if (reviewService.existsById(id)) {
-            reviewService.deleteReview(id); // Exclui a avaliação
+    // Excluir uma avaliação (DELETE)
+    @GetMapping("/delete/{id}")
+    public String showDeleteConfirmation(@PathVariable Integer id, Model model) {
+        Optional<Review> reviewOpt = reviewService.getReviewById(id);  // Recupera a avaliação pelo ID
+        if (reviewOpt.isPresent()) {
+            model.addAttribute("review", reviewOpt.get());  // Se encontrado, adiciona ao modelo
+            return "reviews/delete";  // Página de confirmação de exclusão
         }
-        return "redirect:/reviews/list"; // Redireciona para a lista de avaliações após a exclusão
+        return "redirect:/reviews/list";  // Se não encontrado, redireciona para a lista
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteReview(@PathVariable Integer id) {
+        reviewService.deleteReview(id);  // Exclui a avaliação
+        return "redirect:/reviews/list";  // Redireciona para a lista de avaliações
     }
 }

@@ -2,10 +2,14 @@ package br.edu.fesa.TotalMedia.service;
 
 import br.edu.fesa.TotalMedia.model.User;
 import br.edu.fesa.TotalMedia.repository.UserRepository;
+import br.edu.fesa.TotalMedia.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -74,4 +78,5 @@ public class UserService {
         }
         return null;
     }
+    
 }
