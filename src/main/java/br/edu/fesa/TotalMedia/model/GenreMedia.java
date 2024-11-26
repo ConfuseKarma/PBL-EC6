@@ -26,11 +26,11 @@ public class GenreMedia {
         this.genre = genre;
     }
 
-    public Integer getId() {  // Alterado para Integer
+    public Integer getId() {  
         return id;
     }
 
-    public void setId(Integer id) {  // Alterado para Integer
+    public void setId(Integer id) {  
         this.id = id;
     }
 

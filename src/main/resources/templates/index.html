@@ -46,10 +46,15 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                 <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                                <li><a class="dropdown-item" th:href="@{/my-reviews}">My Reviews</a></li> <!-- Adicionando a opção My Reviews -->
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                                
                             </ul>
                         </div>
+                        
+                        
+                        
                     </div>
                     <button class="btn btn-outline-light mode-toggle-btn" id="modeToggle" onclick="toggleMode()">&#9789;</button>
                 </div>

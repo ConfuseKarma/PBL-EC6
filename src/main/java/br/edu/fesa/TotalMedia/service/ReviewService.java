@@ -11,37 +11,53 @@ import java.util.Optional;
 @Service
 public class ReviewService {
 
-    // Inject the Review repository
+    // Injeção do repositório de Review
     @Autowired
     private ReviewRepository reviewRepository;
 
-    // Save a new review
+    // Salvar uma nova avaliação
     public Review saveReview(Review review) {
-        return reviewRepository.save(review);
+        return reviewRepository.save(review); // Salva a avaliação no banco de dados
     }
 
-    // Get all reviews
+    // Obter todas as avaliações
     public List<Review> getAllReviews() {
-        return reviewRepository.findAll();
+        return reviewRepository.findAll(); // Retorna todas as avaliações do banco
     }
 
-    // Get reviews by type (e.g., "client" or "critic")
+    // Obter avaliações por tipo (por exemplo, "client" ou "critic")
     public List<Review> getReviewsByType(String reviewType) {
-        return reviewRepository.findByReviewType(reviewType);
+        return reviewRepository.findByReviewType(reviewType); // Retorna avaliações filtradas pelo tipo
     }
 
-    // Get a specific review by ID
+    // Obter uma avaliação específica por ID
     public Optional<Review> getReviewById(Integer id) {
-        return reviewRepository.findById(id);
+        return reviewRepository.findById(id); // Retorna a avaliação com o ID fornecido, se existir
     }
 
-    // Update a review
+    // Atualizar uma avaliação existente
     public Review updateReview(Review review) {
-        return reviewRepository.save(review);
+        // Verifica se a avaliação existe antes de atualizar
+        Optional<Review> existingReview = reviewRepository.findById(review.getId());
+        if (existingReview.isPresent()) {
+            return reviewRepository.save(review); // Atualiza a avaliação se encontrada
+        }
+        throw new RuntimeException("Review not found with ID: " + review.getId()); // Lança exceção caso não encontre a avaliação
     }
 
-    // Delete a review
+    // Excluir uma avaliação
     public void deleteReview(Integer id) {
-        reviewRepository.deleteById(id);
+        // Verifica se a avaliação existe antes de excluir
+        Optional<Review> review = reviewRepository.findById(id);
+        if (review.isPresent()) {
+            reviewRepository.deleteById(id); // Exclui a avaliação se encontrada
+        } else {
+            throw new RuntimeException("Review not found with ID: " + id); // Lança exceção caso não encontre a avaliação
+        }
+    }
+
+    // Verifica se a avaliação existe no banco de dados
+    public boolean existsById(Integer id) {
+        return reviewRepository.existsById(id); // Retorna true se a avaliação existir, false caso contrário
     }
 }

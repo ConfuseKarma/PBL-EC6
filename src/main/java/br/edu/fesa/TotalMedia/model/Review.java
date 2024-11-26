@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Table(name = "TB_REVIEW")
@@ -22,14 +23,17 @@ public class Review {
     private String text;  // Texto da revisão
 
     @Column(name = "REVIEW_TYPE", nullable = false, length = 50)
+    @NotNull
     private String reviewType;  // Tipo de revisão (client ou critic)
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @NotNull
     private User user;  // Relacionamento com o usuário (quem fez a review)
 
     @ManyToOne
     @JoinColumn(name = "MEDIA_ID", nullable = false)
+    @NotNull
     private Media media;  // Relacionamento com a mídia (filme/série avaliada)
 
     // Construtor sem o 'id', que será gerado automaticamente pelo banco de dados
@@ -39,6 +43,10 @@ public class Review {
         this.user = user;
         this.media = media;
     }
+    
+    public Review() {
+    // Construtor sem argumentos
+}
 
     // Construtor com todos os campos, incluindo o id (gerado automaticamente)
     public Review(Integer id, String text, String reviewType, User user, Media media) {
@@ -96,8 +104,8 @@ public class Review {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", reviewType='" + reviewType + '\'' +
-                ", user=" + user.getName() + // Assumindo que User tem um método getName()
-                ", media=" + media.getTitle() + // Assumindo que Media tem um método getTitle()
+                ", user=" + (user != null ? user.getName() : "Unknown") + // Se o usuário for nulo, exibe "Unknown"
+                ", media=" + (media != null ? media.getTitle() : "Unknown") + // Se a mídia for nula, exibe "Unknown"
                 '}';
     }
 }

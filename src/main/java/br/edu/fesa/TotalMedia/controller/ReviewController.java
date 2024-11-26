@@ -3,60 +3,69 @@ package br.edu.fesa.TotalMedia.controller;
 import br.edu.fesa.TotalMedia.model.Review;
 import br.edu.fesa.TotalMedia.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/reviews")
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
 
-    // Endpoint to save a review
-    @PostMapping
-    public ResponseEntity<Review> saveReview(@RequestBody Review review) {
-        Review newReview = reviewService.saveReview(review);
-        return ResponseEntity.ok(newReview); // Return 200 OK with the saved review
-    }
-
-    // Endpoint to fetch all reviews
-    @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
+    // Endpoint para exibir a lista de avaliações
+    @GetMapping("/list")
+    public String getAllReviews(Model model) {
         List<Review> reviews = reviewService.getAllReviews();
-        return ResponseEntity.ok(reviews); // Return 200 OK with the list of reviews
+        model.addAttribute("reviews", reviews); // Adiciona a lista de reviews ao modelo
+        return "/reviews/list"; // Retorna o nome do template 'list.html'
     }
 
-    // Endpoint to fetch reviews by type (client, critic)
-    @GetMapping("/type/{reviewType}")
-    public ResponseEntity<List<Review>> getReviewsByType(@PathVariable String reviewType) {
-        List<Review> reviews = reviewService.getReviewsByType(reviewType);
-        return ResponseEntity.ok(reviews); // Return 200 OK with the list of reviews
+    // Endpoint para salvar uma nova avaliação
+    @PostMapping
+    public String saveReview(@ModelAttribute Review review) {
+        reviewService.saveReview(review);
+        return "redirect:/reviews/list"; // Redireciona de volta para a lista de avaliações após salvar
     }
 
-    // Endpoint to fetch a review by ID
+    // Endpoint para exibir a página de criação de uma avaliação
+    @GetMapping("/create")
+    public String createReviewForm(Model model) {
+        model.addAttribute("review", new Review()); // Cria um novo objeto de review para o formulário
+        return "create"; // Retorna o nome do template de criação (create.html)
+    }
+
+    // Endpoint para buscar uma avaliação pelo ID
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Integer id) {
+    public String getReviewById(@PathVariable Integer id, Model model) {
         Optional<Review> review = reviewService.getReviewById(id);
-        return review.map(ResponseEntity::ok) // Return 200 OK with the review
-                     .orElseGet(() -> ResponseEntity.notFound().build()); // Return 404 if not found
+        if (review.isPresent()) {
+            model.addAttribute("review", review.get());
+            return "edit"; // Retorna a página de edição (edit.html)
+        }
+        return "redirect:/reviews/list"; // Redireciona de volta para a lista caso não encontre
     }
 
-    // Endpoint to update a review
+    // Endpoint para atualizar uma avaliação
     @PutMapping("/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable Integer id, @RequestBody Review review) {
-        review.setId(id); // Ensure the review ID is set correctly
-        Review updatedReview = reviewService.updateReview(review);
-        return ResponseEntity.ok(updatedReview); // Return 200 OK with the updated review
+    public String updateReview(@PathVariable Integer id, @ModelAttribute Review review) {
+        if (reviewService.existsById(id)) {
+            review.setId(id); // Garante que o ID da avaliação está correto
+            reviewService.updateReview(review);
+        }
+        return "redirect:/reviews/list"; // Redireciona para a lista de avaliações após a atualização
     }
 
-    // Endpoint to delete a review
+    // Endpoint para deletar uma avaliação
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Integer id) {
-        reviewService.deleteReview(id);
-        return ResponseEntity.noContent().build(); // Return 204 No Content after successful deletion
+    public String deleteReview(@PathVariable Integer id) {
+        if (reviewService.existsById(id)) {
+            reviewService.deleteReview(id); // Exclui a avaliação
+        }
+        return "redirect:/reviews/list"; // Redireciona para a lista de avaliações após a exclusão
     }
 }
